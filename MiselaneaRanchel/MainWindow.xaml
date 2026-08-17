@@ -1,0 +1,66 @@
+﻿<Window x:Class="MiselaneaRanchel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sistema de Administración" Height="768" Width="1024"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- Estilos para los botones laterales -->
+    <Window.Resources>
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#BDC3C7"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#34495E"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- BARRA LATERAL OSCURA -->
+        <Border Grid.Column="0" Background="#1A252F">
+            <StackPanel Margin="0,30,0,0">
+                <TextBlock Text="MISCELÁNEA RM" Foreground="White" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+
+                <!-- Botones con eventos Click -->
+                <Button Content="Dashboard (Inicio)" Style="{StaticResource MenuButtonStyle}" Click="BtnDashboard_Click"/>
+                <Button Content="Punto de Venta" Style="{StaticResource MenuButtonStyle}" Click="BtnVentas_Click"/>
+                <Button Content="Inventario" Style="{StaticResource MenuButtonStyle}" Click="BtnInventario_Click"/>
+                <Button Content="Compras" Style="{StaticResource MenuButtonStyle}" Click="BtnCompras_Click"/>
+                <Button Content="Corte de Caja" Style="{StaticResource MenuButtonStyle}" Click="BtnCaja_Click"/>
+                <Button Content="Reportes" Style="{StaticResource MenuButtonStyle}" Click="BtnReportes_Click"/>
+                <Button Content="Configuración" Style="{StaticResource MenuButtonStyle}" Click="BtnConfiguracion_Click"/>
+                <Button Content="Catálogo General" Style="{StaticResource MenuButtonStyle}" Click="BtnCatalogos_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <Border Grid.Column="1" Background="#ECF0F1">
+            <ContentControl x:Name="MainContentControl">
+                <!-- Se llenará dinámicamente desde el código -->
+            </ContentControl>
+        </Border>
+    </Grid>
+</Window>

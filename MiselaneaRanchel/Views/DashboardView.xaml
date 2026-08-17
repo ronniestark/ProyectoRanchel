@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="MiselaneaRanchel.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#ECF0F1">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Resumen de Hoy" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
+
+        <!-- Tarjetas de resumen -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top">
+            <Border Background="White" Width="200" Height="120" CornerRadius="8" Margin="0,0,20,0" Padding="15">
+                <Border.Effect>
+                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="VENTAS HOY" Foreground="#7F8C8D" FontSize="14" FontWeight="Bold"/>
+                    <TextBlock Text="$ 8,450.00" Foreground="#27AE60" FontSize="28" FontWeight="Bold" Margin="0,15,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="White" Width="200" Height="120" CornerRadius="8" Padding="15">
+                <Border.Effect>
+                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="PRODUCTOS VENDIDOS" Foreground="#7F8C8D" FontSize="14" FontWeight="Bold"/>
+                    <TextBlock Text="342" Foreground="#2980B9" FontSize="28" FontWeight="Bold" Margin="0,15,0,0"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

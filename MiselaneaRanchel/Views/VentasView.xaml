@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="MiselaneaRanchel.Views.VentasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#ECF0F1">
+
+    <Grid Margin="20">
+        <!-- DISEÑO CLÁSICO VERTICAL (Buscador -> Grilla -> Totales) -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Título -->
+            <RowDefinition Height="Auto"/>
+            <!-- Buscador de Productos (Arriba) -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid / Carrito (Centro - Expansible) -->
+            <RowDefinition Height="Auto"/>
+            <!-- Panel de Cobro y Totales (Abajo) -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. TÍTULO -->
+        <TextBlock Grid.Row="0" Text="Punto de Venta" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+
+        <!-- 2. BUSCADOR / CÓDIGO DE BARRAS (SUPERIOR) -->
+        <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="Código de Barras o Producto (F3):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                    <TextBox x:Name="TxtBuscador" Height="45" FontSize="20" Padding="10,5" Background="#F8F9F9" FontWeight="SemiBold"/>
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="Buscar" Width="120" Height="45" Margin="15,20,0,0" Background="#34495E" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" VerticalAlignment="Bottom"/>
+            </Grid>
+        </Border>
+
+        <!-- 3. DATA GRID / CARRITO (CENTRO) -->
+        <DataGrid Grid.Row="2" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" Margin="0,0,0,15">
+            <DataGrid.Effect>
+                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+            </DataGrid.Effect>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Código" Width="150" Binding="{Binding CodigoBarras}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Descripción del Producto" Width="*" Binding="{Binding Descripcion}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Cant." Width="100" Binding="{Binding Cantidad}" FontWeight="Bold"/>
+                <DataGridTextColumn Header="Precio Unit." Width="150" Binding="{Binding PrecioVenta}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Subtotal" Width="150" Binding="{Binding SubTotal}" IsReadOnly="True" FontWeight="Bold"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- 4. PANEL DE COBRO Y TOTALES (INFERIOR) -->
+        <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="20">
+            <Border.Effect>
+                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Lado Izquierdo: Botón cancelar e info -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- Lado Derecho: Calculadora y Cobro -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Lado Izquierdo del Pie de Página -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                        <TextBlock Text="Artículos en carrito:" FontSize="16" Foreground="#7F8C8D" Margin="0,0,10,0"/>
+                        <TextBlock Text="0" FontSize="16" FontWeight="Bold" Foreground="#2C3E50"/>
+                    </StackPanel>
+
+                    <Button Content="Cancelar Venta" Height="40" Width="150" FontSize="14" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Left" Cursor="Hand"/>
+                </StackPanel>
+
+                <!-- Lado Derecho del Pie de Página (Totales) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                    <!-- Calculadora de Cambio -->
+                    <Grid Margin="0,0,30,0" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Efectivo:" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Width="130" Height="40" FontSize="20" FontWeight="Bold" TextAlignment="Right" Foreground="#2980B9" Padding="5" Margin="0,0,0,10"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Cambio:" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <!-- Línea separadora -->
+                    <Border Width="1" Background="#ECF0F1" Margin="0,0,30,0"/>
+
+                    <!-- Total Gigante -->
+                    <StackPanel Margin="0,0,30,0" VerticalAlignment="Center">
+                        <TextBlock Text="TOTAL A PAGAR" FontSize="16" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Right"/>
+                        <TextBlock Text="$ 0.00" FontSize="56" FontWeight="Bold" Foreground="#27AE60" HorizontalAlignment="Right"/>
+                    </StackPanel>
+
+                    <!-- Botón de Cobro -->
+                    <Button Content="COBRAR (F12)" Height="80" Width="200" FontSize="24" FontWeight="Bold" Background="#27AE60" Foreground="White" BorderBrush="Transparent" Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

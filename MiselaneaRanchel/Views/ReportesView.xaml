@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="MiselaneaRanchel.Views.ReportesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#ECF0F1">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Título -->
+            <RowDefinition Height="Auto"/>
+            <!-- Filtros (Fechas) -->
+            <RowDefinition Height="*"/>
+            <!-- Lista de Reportes y Tabla de Resultados -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. TÍTULO -->
+        <TextBlock Grid.Row="0" Text="Reportes y Estadísticas" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
+
+        <!-- 2. FILTROS DE FECHA Y ACCIONES -->
+        <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Center">
+                    <TextBlock Text="Desde:" FontWeight="SemiBold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <DatePicker Height="35" Width="130" FontSize="14"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Hasta:" FontWeight="SemiBold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <DatePicker Height="35" Width="130" FontSize="14"/>
+                </StackPanel>
+
+                <Button Grid.Column="3" Content="Exportar a Excel" Height="35" Padding="20,0" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand"/>
+            </Grid>
+        </Border>
+
+        <!-- 3. CONTENIDO PRINCIPAL (LISTA DE REPORTES Y TABLA) -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <!-- Columna para la lista de reportes -->
+                <ColumnDefinition Width="*"/>
+                <!-- Columna para los resultados (Grilla) -->
+            </Grid.ColumnDefinitions>
+
+            <!-- EL MENÚ / LISTA DE REPORTES -->
+            <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="15" Margin="0,0,15,0">
+                <Border.Effect>
+                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="Selecciona un Reporte" FontSize="16" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+
+                    <!-- Botones de la lista de reportes -->
+                    <Button Height="45" Background="#F8F9F9" Foreground="#34495E" BorderBrush="#ECF0F1" BorderThickness="1" Margin="0,0,0,8" HorizontalContentAlignment="Left" Padding="15,0,0,0">
+                        <TextBlock Text="📊 Ventas Detalladas" FontWeight="SemiBold" FontSize="14"/>
+                    </Button>
+
+                    <Button Height="45" Background="#F8F9F9" Foreground="#34495E" BorderBrush="#ECF0F1" BorderThickness="1" Margin="0,0,0,8" HorizontalContentAlignment="Left" Padding="15,0,0,0">
+                        <TextBlock Text="💰 Ganancias (Utilidad)" FontWeight="SemiBold" FontSize="14"/>
+                    </Button>
+
+                    <Button Height="45" Background="#F8F9F9" Foreground="#34495E" BorderBrush="#ECF0F1" BorderThickness="1" Margin="0,0,0,8" HorizontalContentAlignment="Left" Padding="15,0,0,0">
+                        <TextBlock Text="📈 Productos Más Vendidos" FontWeight="SemiBold" FontSize="14"/>
+                    </Button>
+
+                    <Button Height="45" Background="#F8F9F9" Foreground="#34495E" BorderBrush="#ECF0F1" BorderThickness="1" Margin="0,0,0,8" HorizontalContentAlignment="Left" Padding="15,0,0,0">
+                        <TextBlock Text="📦 Historial de Compras" FontWeight="SemiBold" FontSize="14"/>
+                    </Button>
+
+                    <Button Height="45" Background="#F8F9F9" Foreground="#34495E" BorderBrush="#ECF0F1" BorderThickness="1" Margin="0,0,0,8" HorizontalContentAlignment="Left" Padding="15,0,0,0">
+                        <TextBlock Text="🗑️ Historial de Mermas" FontWeight="SemiBold" FontSize="14"/>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- RESULTADOS DEL REPORTE (DATAGRID) -->
+            <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="15">
+                <Border.Effect>
+                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Título dinámico (Cambiará según el botón que presionen) -->
+                    <TextBlock Grid.Row="0" Text="Resultados: Ventas Detalladas" FontSize="18" FontWeight="Bold" Foreground="#2980B9" Margin="0,0,0,15"/>
+
+                    <DataGrid Grid.Row="1" Background="White" AutoGenerateColumns="True" CanUserAddRows="False" RowHeight="35" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column">
+                        <!-- Las columnas aquí las dejé en AutoGenerateColumns="True" porque dependerán 
+                             del reporte que elijas, C# se encargará de crear las columnas dinámicamente -->
+                    </DataGrid>
+
+                    <!-- Fila de Totales Generales del Reporte -->
+                    <Border Grid.Row="2" Background="#34495E" CornerRadius="4" Padding="15,10" Margin="0,15,0,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Text="TOTAL DE ESTE REPORTE:" FontSize="16" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <TextBlock Text="$ 0.00" FontSize="22" FontWeight="Bold" Foreground="#F1C40F" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

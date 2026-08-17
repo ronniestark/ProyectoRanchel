@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="MiselaneaRanchel.Views.InventarioView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#ECF0F1">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 1. TÍTULO Y ALERTAS -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Control de Inventario" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Center"/>
+
+            <!-- Tarjeta: Total de Productos -->
+            <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="15,10" Margin="0,0,15,0">
+                <Border.Effect>
+                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="TOTAL REFERENCIAS" Foreground="#7F8C8D" FontSize="11" FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtTotalReferencias" Text="0" Foreground="#2980B9" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Tarjeta: Alerta de Stock Bajo -->
+            <Border Grid.Column="2" Background="#FFF3CD" BorderBrush="#FFEEBA" BorderThickness="1" CornerRadius="8" Padding="15,10">
+                <Border.Effect>
+                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="PRODUCTOS STOCK BAJO" Foreground="#856404" FontSize="11" FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtStockBajo" Text="0" Foreground="#D35400" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- 2. BARRA DE BÚSQUEDA Y ACCIONES -->
+        <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Buscador -->
+                <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Center">
+                    <TextBlock Text="Buscar por Código o Nombre:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                    <Grid>
+                        <TextBox x:Name="TxtBuscador" Height="35" FontSize="14" Padding="5,0,0,0" VerticalContentAlignment="Center" TextChanged="Filtros_Changed"/>
+                        <TextBlock x:Name="TxtHintBuscador" Text="Ej. Tomate, Coca Cola, 75010..." Foreground="#BDC3C7" IsHitTestVisible="False" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Filtro por Categoría -->
+                <StackPanel Grid.Column="1" Margin="0,0,20,0" VerticalAlignment="Center">
+                    <TextBlock Text="Filtrar por Categoría:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                    <ComboBox x:Name="CmbCategoriaFiltro" Height="35" FontSize="14" SelectionChanged="Filtros_Changed"/>
+                </StackPanel>
+
+                <CheckBox x:Name="ChkStockBajo" Grid.Column="2" Content="Solo Stock Bajo" VerticalAlignment="Bottom" Margin="0,0,20,8" FontWeight="SemiBold" Foreground="#E67E22" Checked="Filtros_Changed" Unchecked="Filtros_Changed"/>
+
+                <!-- Botón de Acción Principal -->
+                <Button Grid.Column="3" VerticalAlignment="Bottom" Height="35" Padding="15,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnRegistrarMerma_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⚠" Margin="0,0,5,0"/>
+                        <TextBlock Text="Registrar Merma / Ajuste"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- 3. TABLA DE DATOS (DATAGRID) -->
+        <DataGrid x:Name="DgInventario" Grid.Row="2" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="35" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" IsReadOnly="True">
+            <DataGrid.Effect>
+                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+            </DataGrid.Effect>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Código" Width="120" Binding="{Binding CodigoBarras}"/>
+                <DataGridTextColumn Header="Descripción del Producto" Width="*" Binding="{Binding Descripcion}"/>
+                <DataGridTextColumn Header="Categoría" Width="150" Binding="{Binding Categoria.Nombre}"/>
+                <DataGridTextColumn Header="Stock Actual" Width="120" Binding="{Binding StockActual, StringFormat=N3}" FontWeight="Bold"/>
+                <DataGridTextColumn Header="Unidad" Width="80" Binding="{Binding UnidadMedida.Abreviatura}"/>
+                <DataGridTextColumn Header="Costo ($)" Width="100" Binding="{Binding PrecioCosto, StringFormat=C2}"/>
+                <DataGridTextColumn Header="Precio Venta ($)" Width="120" Binding="{Binding PrecioVenta, StringFormat=C2}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

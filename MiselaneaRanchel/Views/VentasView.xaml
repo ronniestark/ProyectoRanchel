@@ -4,22 +4,17 @@
              Background="#ECF0F1">
 
     <Grid Margin="20">
-        <!-- DISEÑO CLÁSICO VERTICAL (Buscador -> Grilla -> Totales) -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Título -->
             <RowDefinition Height="Auto"/>
-            <!-- Buscador de Productos (Arriba) -->
             <RowDefinition Height="*"/>
-            <!-- DataGrid / Carrito (Centro - Expansible) -->
             <RowDefinition Height="Auto"/>
-            <!-- Panel de Cobro y Totales (Abajo) -->
         </Grid.RowDefinitions>
 
         <!-- 1. TÍTULO -->
         <TextBlock Grid.Row="0" Text="Punto de Venta" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,15"/>
 
-        <!-- 2. BUSCADOR / CÓDIGO DE BARRAS (SUPERIOR) -->
+        <!-- 2. BUSCADOR Y CANTIDAD -->
         <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,15">
             <Border.Effect>
                 <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
@@ -30,30 +25,43 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <TextBlock Text="Código de Barras o Producto (F3):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                <!-- Panel Izquierdo: Cantidad + Buscador -->
+                <Grid Grid.Column="0" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <!-- Se agregó TextChanged para detectar cuando escribes -->
-                    <TextBox x:Name="TxtBuscador" Height="45" FontSize="20" Padding="10,5" Background="#F8F9F9" FontWeight="SemiBold" 
-             KeyDown="TxtBuscador_KeyDown" TextChanged="TxtBuscador_TextChanged"/>
+                    <!-- NUEVO: Campo de Cantidad -->
+                    <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                        <TextBlock Text="Cant:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtCantidad" Text="1" Width="70" Height="45" FontSize="20" Padding="5" TextAlignment="Center" Background="#F8F9F9" FontWeight="Bold"/>
+                    </StackPanel>
 
-                    <!-- MENÚ EMERGENTE PARA SUGERENCIAS -->
-                    <Popup x:Name="PopupSugerencias" PlacementTarget="{Binding ElementName=TxtBuscador}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=TxtBuscador, Path=ActualWidth}">
-                        <Border BorderBrush="#BDC3C7" BorderThickness="1" Background="White" MaxHeight="200">
-                            <ListBox x:Name="LstSugerencias" Background="White" BorderThickness="0" 
-                     SelectionChanged="LstSugerencias_SelectionChanged" KeyDown="LstSugerencias_KeyDown">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Margin="5">
-                                            <TextBlock Text="{Binding CodigoBarras}" FontWeight="Bold" Foreground="#2980B9" Width="130"/>
-                                            <TextBlock Text="{Binding Descripcion}" Foreground="#2C3E50" FontSize="16"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Border>
-                    </Popup>
-                </StackPanel>
+                    <!-- Buscador Original -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Código de Barras o Producto (F3):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtBuscador" Height="45" FontSize="20" Padding="10,5" Background="#F8F9F9" FontWeight="SemiBold" 
+                                 KeyDown="TxtBuscador_KeyDown" TextChanged="TxtBuscador_TextChanged"/>
+
+                        <!-- MENÚ EMERGENTE PARA SUGERENCIAS -->
+                        <Popup x:Name="PopupSugerencias" PlacementTarget="{Binding ElementName=TxtBuscador}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=TxtBuscador, Path=ActualWidth}">
+                            <Border BorderBrush="#BDC3C7" BorderThickness="1" Background="White" MaxHeight="200">
+                                <ListBox x:Name="LstSugerencias" Background="White" BorderThickness="0" 
+                                         SelectionChanged="LstSugerencias_SelectionChanged" KeyDown="LstSugerencias_KeyDown">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="5">
+                                                <TextBlock Text="{Binding CodigoBarras}" FontWeight="Bold" Foreground="#2980B9" Width="130"/>
+                                                <TextBlock Text="{Binding Descripcion}" Foreground="#2C3E50" FontSize="16"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+                        </Popup>
+                    </StackPanel>
+                </Grid>
 
                 <Button x:Name="BtnBuscar" Grid.Column="1" Content="Buscar / Agregar" Width="150" Height="45" Margin="15,20,0,0" Background="#34495E" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" VerticalAlignment="Bottom" Click="BtnBuscar_Click"/>
             </Grid>
@@ -64,7 +72,6 @@
             <DataGrid.Effect>
                 <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
             </DataGrid.Effect>
-            <!-- Bindings configurados para leer la clase DetalleVentaTemporal -->
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Código" Width="150" Binding="{Binding Codigo}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Descripción del Producto" Width="*" Binding="{Binding Descripcion}" IsReadOnly="True"/>
@@ -79,29 +86,21 @@
             <Border.Effect>
                 <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
             </Border.Effect>
-
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Lado Izquierdo: Botón cancelar e info -->
                     <ColumnDefinition Width="*"/>
-                    <!-- Lado Derecho: Calculadora y Cobro -->
                 </Grid.ColumnDefinitions>
 
-                <!-- Lado Izquierdo del Pie de Página -->
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                         <TextBlock Text="Artículos en carrito:" FontSize="16" Foreground="#7F8C8D" Margin="0,0,10,0"/>
                         <TextBlock x:Name="TxtTotalArticulos" Text="0" FontSize="16" FontWeight="Bold" Foreground="#2C3E50"/>
                     </StackPanel>
-
                     <Button x:Name="BtnCancelarVenta" Content="Cancelar Venta" Height="40" Width="150" FontSize="14" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Left" Cursor="Hand" Click="BtnCancelarVenta_Click"/>
                 </StackPanel>
 
-                <!-- Lado Derecho del Pie de Página (Totales) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-
-                    <!-- Calculadora de Cambio -->
                     <Grid Margin="0,0,30,0" VerticalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -119,16 +118,13 @@
                         <TextBlock x:Name="TxtCambio" Grid.Row="1" Grid.Column="1" Text="$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right"/>
                     </Grid>
 
-                    <!-- Línea separadora -->
                     <Border Width="1" Background="#ECF0F1" Margin="0,0,30,0"/>
 
-                    <!-- Total Gigante -->
                     <StackPanel Margin="0,0,30,0" VerticalAlignment="Center">
                         <TextBlock Text="TOTAL A PAGAR" FontSize="16" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Right"/>
                         <TextBlock x:Name="TxtTotalPagar" Text="$ 0.00" FontSize="56" FontWeight="Bold" Foreground="#27AE60" HorizontalAlignment="Right"/>
                     </StackPanel>
 
-                    <!-- Botón de Cobro -->
                     <Button x:Name="BtnCobrar" Content="COBRAR" Height="80" Width="200" FontSize="24" FontWeight="Bold" Background="#27AE60" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnCobrar_Click"/>
                 </StackPanel>
             </Grid>

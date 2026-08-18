@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using MiselaneaRanchel.Data;
 using MiselaneaRanchel.Models;
+using MiselaneaRanchel.Reportes; 
 
 namespace MiselaneaRanchel.Views
 {
@@ -25,7 +26,6 @@ namespace MiselaneaRanchel.Views
             _carrito = new ObservableCollection<DetalleVentaTemporal>();
             DgCarrito.ItemsSource = _carrito;
 
-            // Al cargar la vista, el cursor se pone directo en el buscador
             TxtBuscador.Focus();
         }
 
@@ -37,12 +37,11 @@ namespace MiselaneaRanchel.Views
         {
             if (e.Key == Key.Enter)
             {
-                PopupSugerencias.IsOpen = false; // Cerramos sugerencias si damos enter
+                PopupSugerencias.IsOpen = false;
                 BuscarYAgregarProducto();
             }
             else if (e.Key == Key.Down && PopupSugerencias.IsOpen)
             {
-                // Mover el foco a la lista desplegable para navegar con teclado
                 LstSugerencias.Focus();
                 if (LstSugerencias.Items.Count > 0)
                     LstSugerencias.SelectedIndex = 0;
@@ -53,14 +52,12 @@ namespace MiselaneaRanchel.Views
         {
             string busqueda = TxtBuscador.Text.Trim();
 
-            // Evitar buscar si el campo está vacío
             if (string.IsNullOrEmpty(busqueda))
             {
                 PopupSugerencias.IsOpen = false;
                 return;
             }
 
-            // Buscar coincidencias en BD (.Take(10) evita que el sistema se trabe si hay miles de productos)
             var coincidencias = _context.Productos
                 .Where(p => p.Activo == true &&
                            (p.Descripcion.Contains(busqueda) || p.CodigoBarras.Contains(busqueda)))
@@ -97,19 +94,12 @@ namespace MiselaneaRanchel.Views
         private void ProcesarSeleccionPopup(Producto productoSeleccionado)
         {
             PopupSugerencias.IsOpen = false;
-
-            // Desuscribimos temporalmente el TextChanged para que no vuelva a abrir el popup al setear el texto
             TxtBuscador.TextChanged -= TxtBuscador_TextChanged;
-
-            // Ponemos el código de barras exacto en el textbox
             TxtBuscador.Text = productoSeleccionado.CodigoBarras;
-
             TxtBuscador.TextChanged += TxtBuscador_TextChanged;
 
-            // Ejecutamos tu lógica existente de búsqueda y agregado
             BuscarYAgregarProducto();
 
-            // Reseteamos el listbox
             LstSugerencias.SelectedItem = null;
             TxtBuscador.Focus();
         }
@@ -120,45 +110,47 @@ namespace MiselaneaRanchel.Views
         }
 
         // =================================================================
-        // 2. LÓGICA PRINCIPAL: AGREGAR AL CARRITO
+        // 2. LÓGICA PRINCIPAL: AGREGAR AL CARRITO (CON CANTIDAD)
         // =================================================================
         private void BuscarYAgregarProducto()
         {
             string busqueda = TxtBuscador.Text.Trim();
             if (string.IsNullOrEmpty(busqueda)) return;
 
-            // Busca el producto por código de barras o nombre
+            // Leemos y validamos la cantidad ingresada (Si escriben letras, ponemos 1 por defecto)
+            if (!decimal.TryParse(TxtCantidad.Text, out decimal cantidadAAgregar) || cantidadAAgregar <= 0)
+            {
+                cantidadAAgregar = 1;
+            }
+
             var producto = _context.Productos
                 .FirstOrDefault(p => (p.CodigoBarras == busqueda || p.Descripcion == busqueda) && p.Activo == true);
 
             if (producto != null)
             {
-                // Verifica si hay stock
-                if (producto.StockActual <= 0)
+                if (producto.StockActual <= 0 || producto.StockActual < cantidadAAgregar)
                 {
-                    MessageBox.Show($"El producto '{producto.Descripcion}' no tiene stock disponible (0).", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show($"No hay stock suficiente. Solo quedan {producto.StockActual} disponibles.", "Stock Insuficiente", MessageBoxButton.OK, MessageBoxImage.Warning);
                     TxtBuscador.SelectAll();
                     return;
                 }
 
-                // Verifica si ya está en el carrito
                 var itemEnCarrito = _carrito.FirstOrDefault(c => c.ProductoID == producto.ProductoID);
 
                 if (itemEnCarrito != null)
                 {
-                    if ((itemEnCarrito.Cantidad + 1) > producto.StockActual)
+                    if ((itemEnCarrito.Cantidad + cantidadAAgregar) > producto.StockActual)
                     {
-                        MessageBox.Show($"Stock insuficiente. Solo quedan {producto.StockActual} disponibles.", "Stock Bajo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show($"Stock insuficiente para agregar {cantidadAAgregar} más. Solo quedan {producto.StockActual} disponibles.", "Stock Bajo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
-                        itemEnCarrito.Cantidad += 1;
-                        DgCarrito.Items.Refresh(); // Refresca la vista de la tabla
+                        itemEnCarrito.Cantidad += cantidadAAgregar;
+                        DgCarrito.Items.Refresh();
                     }
                 }
                 else
                 {
-                    // Si es nuevo, lo agregamos al carrito
                     _carrito.Add(new DetalleVentaTemporal
                     {
                         ProductoID = producto.ProductoID,
@@ -166,13 +158,14 @@ namespace MiselaneaRanchel.Views
                         Descripcion = producto.Descripcion,
                         PrecioCosto = producto.PrecioCosto,
                         PrecioVenta = producto.PrecioVenta,
-                        Cantidad = 1
+                        Cantidad = cantidadAAgregar
                     });
                 }
 
                 ActualizarTotales();
 
-                // Limpia el buscador para el siguiente producto
+                // Limpiamos el buscador y restauramos la cantidad a "1"
+                TxtCantidad.Text = "1";
                 TxtBuscador.Text = "";
                 TxtBuscador.Focus();
             }
@@ -189,10 +182,8 @@ namespace MiselaneaRanchel.Views
         private void ActualizarTotales()
         {
             _totalVenta = _carrito.Sum(x => x.SubTotal);
-
             TxtTotalPagar.Text = _totalVenta.ToString("C2");
-            TxtTotalArticulos.Text = _carrito.Sum(x => x.Cantidad).ToString("N0");
-
+            TxtTotalArticulos.Text = _carrito.Sum(x => x.Cantidad).ToString("N2");
             CalcularCambio();
         }
 
@@ -206,15 +197,7 @@ namespace MiselaneaRanchel.Views
             if (decimal.TryParse(TxtEfectivo.Text, out decimal efectivoRecibido))
             {
                 decimal cambio = efectivoRecibido - _totalVenta;
-
-                if (cambio < 0)
-                {
-                    TxtCambio.Text = "$ 0.00";
-                }
-                else
-                {
-                    TxtCambio.Text = cambio.ToString("C2");
-                }
+                TxtCambio.Text = cambio < 0 ? "$ 0.00" : cambio.ToString("C2");
             }
             else
             {
@@ -223,7 +206,7 @@ namespace MiselaneaRanchel.Views
         }
 
         // =================================================================
-        // 4. PROCESAR VENTA (GUARDAR EN BD Y DESCONTAR INVENTARIO)
+        // 4. PROCESAR VENTA Y GENERAR TICKET
         // =================================================================
         private void BtnCobrar_Click(object sender, RoutedEventArgs e)
         {
@@ -295,6 +278,10 @@ namespace MiselaneaRanchel.Views
                     _context.SaveChanges();
                     transaccion.Commit();
 
+                    // ¡LLAMADA A LA NUEVA CLASE PARA GENERAR EL TICKET!
+                    var generador = new GeneradorTicket();
+                    generador.CrearEImprimirTicket(nuevaVenta, _carrito.ToList(), efectivo, cambio);
+
                     MessageBox.Show($"¡Venta cobrada con éxito!\n\nSu Cambio es: {cambio:C2}", "Cobro Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     LimpiarPantallaVenta();
@@ -326,6 +313,7 @@ namespace MiselaneaRanchel.Views
         {
             _carrito.Clear();
             _totalVenta = 0;
+            TxtCantidad.Text = "1";
             TxtBuscador.Text = "";
             TxtEfectivo.Text = "";
             TxtCambio.Text = "$ 0.00";
@@ -334,25 +322,5 @@ namespace MiselaneaRanchel.Views
             TxtBuscador.Focus();
         }
     }
-
-    // =================================================================
-    // CLASE AUXILIAR PARA LA GRILLA
-    // =================================================================
-    public class DetalleVentaTemporal
-    {
-        public int ProductoID { get; set; }
-        public string Codigo { get; set; }
-        public string Descripcion { get; set; }
-        public decimal PrecioVenta { get; set; }
-        public decimal PrecioCosto { get; set; }
-
-        private decimal _cantidad;
-        public decimal Cantidad
-        {
-            get => _cantidad;
-            set { _cantidad = value; }
-        }
-
-        public decimal SubTotal => Cantidad * PrecioVenta;
-    }
+    
 }

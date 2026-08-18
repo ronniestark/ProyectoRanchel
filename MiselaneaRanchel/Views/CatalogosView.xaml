@@ -11,7 +11,7 @@
             <!-- Contenedor de Pestañas -->
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Catálogos del Sistema" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="Catálogos General" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
 
         <!-- CONTENEDOR DE PESTAÑAS (TABS) -->
         <TabControl Grid.Row="1" Background="Transparent" BorderBrush="Transparent" Padding="0">

@@ -6,13 +6,9 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Encabezado -->
             <RowDefinition Height="Auto"/>
-            <!-- Tarjetas del Sistema -->
             <RowDefinition Height="*"/>
-            <!-- Ingreso Físico y Diferencia -->
             <RowDefinition Height="Auto"/>
-            <!-- Botones de Acción -->
         </Grid.RowDefinitions>
 
         <!-- 1. ENCABEZADO -->
@@ -21,7 +17,7 @@
             <TextBlock Text="Turno Actual - Administrador" FontSize="16" Foreground="#7F8C8D" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <!-- 2. TARJETAS DEL SISTEMA (LO ESPERADO) -->
+        <!-- 2. TARJETAS DEL SISTEMA -->
         <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -37,7 +33,8 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="FONDO INICIAL" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <TextBlock Text="$ 500.00" Foreground="#2C3E50" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <!-- AGREGADO: x:Name -->
+                    <TextBlock x:Name="TxtFondoInicial" Text="$ 0.00" Foreground="#2C3E50" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -48,7 +45,8 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="VENTAS EN EFECTIVO" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <TextBlock Text="$ 3,450.50" Foreground="#2980B9" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <!-- AGREGADO: x:Name -->
+                    <TextBlock x:Name="TxtVentasEfectivo" Text="$ 0.00" Foreground="#2980B9" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -58,8 +56,9 @@
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="SALIDAS EXTRA (PAGOS)" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <TextBlock Text="- $ 200.00" Foreground="#E74C3C" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock Text="SALIDAS EXTRA (COMPRAS)" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
+                    <!-- AGREGADO: x:Name -->
+                    <TextBlock x:Name="TxtSalidasExtra" Text="$ 0.00" Foreground="#E74C3C" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -70,12 +69,13 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="TOTAL ESPERADO EN CAJA" Foreground="#ECF0F1" FontSize="12" FontWeight="Bold"/>
-                    <TextBlock Text="$ 3,750.50" Foreground="#F1C40F" FontSize="26" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <!-- AGREGADO: x:Name -->
+                    <TextBlock x:Name="TxtTotalEsperado" Text="$ 0.00" Foreground="#F1C40F" FontSize="26" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>
 
-        <!-- 3. ARQUEO FÍSICO (LA REALIDAD) -->
+        <!-- 3. ARQUEO FÍSICO -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -91,31 +91,30 @@
                     <TextBlock Text="Efectivo Real Contado:" FontSize="20" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,10"/>
                     <TextBlock Text="Ingresa la cantidad exacta de dinero que hay físicamente en la gaveta." TextWrapping="Wrap" Foreground="#7F8C8D" Margin="0,0,0,20"/>
 
-                    <TextBox x:Name="TxtEfectivoReal" FontSize="36" FontWeight="Bold" Foreground="#27AE60" TextAlignment="Center" Height="60" Padding="5" Background="#EAEDED"/>
+                    <!-- AGREGADO: TextChanged para calcular en vivo -->
+                    <TextBox x:Name="TxtEfectivoReal" FontSize="36" FontWeight="Bold" Foreground="#27AE60" TextAlignment="Center" Height="60" Padding="5" Background="#EAEDED" TextChanged="TxtEfectivoReal_TextChanged"/>
                 </StackPanel>
             </Border>
 
-            <!-- Panel de Diferencia (Faltante / Sobrante) -->
+            <!-- Panel de Diferencia -->
             <Border Grid.Column="1" Background="White" CornerRadius="8" Margin="10,0,0,0" Padding="20">
                 <Border.Effect>
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="Diferencia" FontSize="20" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Center"/>
-
-                    <!-- Este texto cambiará de color por código (Rojo si falta, Verde si sobra) -->
                     <TextBlock x:Name="TxtDiferencia" Text="$ 0.00" FontSize="48" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,15,0,15"/>
-
-                    <TextBlock x:Name="TxtEstadoCaja" Text="CAJA CUADRADA" FontSize="18" FontWeight="Bold" Foreground="#27AE60" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="TxtEstadoCaja" Text="ESPERANDO CONTEO" FontSize="18" FontWeight="Bold" Foreground="#BDC3C7" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>
 
         <!-- 4. BOTONES DE ACCIÓN -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Imprimir Reporte" Width="180" Height="45" FontSize="16" FontWeight="Bold" Background="#95A5A6" Foreground="White" BorderBrush="Transparent" Margin="0,0,15,0"/>
-
-            <Button Content="CERRAR TURNO" Width="200" Height="45" FontSize="16" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent"/>
+            <!-- AGREGADO: Click -->
+            <Button x:Name="BtnReporte" Content="Actualizar / Refrescar Datos" Width="220" Height="45" FontSize="16" FontWeight="Bold" Background="#95A5A6" Foreground="White" BorderBrush="Transparent" Margin="0,0,15,0" Click="BtnRefrescar_Click"/>
+            <!-- AGREGADO: Click -->
+            <Button x:Name="BtnCerrarTurno" Content="CERRAR TURNO (GUARDAR)" Width="230" Height="45" FontSize="16" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" Click="BtnCerrarTurno_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

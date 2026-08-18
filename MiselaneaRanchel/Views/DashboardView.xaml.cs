@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore;
 using MiselaneaRanchel.Data;
+using MiselaneaRanchel.Models;
 
 namespace MiselaneaRanchel.Views
 {
@@ -91,13 +92,5 @@ namespace MiselaneaRanchel.Views
         }
     }
 
-    // =================================================================
-    // CLASE AUXILIAR PARA EL DATAGRID (Debe ir fuera de la clase principal)
-    // =================================================================
-    public class TopProductoViewModel
-    {
-        public string Descripcion { get; set; }
-        public decimal TotalVendido { get; set; }
-        public decimal TotalDinero { get; set; }
-    }
+ 
 }

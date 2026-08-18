@@ -335,13 +335,5 @@ namespace MiselaneaRanchel.Views
         }
     }
 
-    public class DetalleCompraTemporal
-    {
-        public int ProductoID { get; set; }
-        public string Codigo { get; set; }
-        public string Descripcion { get; set; }
-        public decimal Cantidad { get; set; }
-        public decimal CostoUnitario { get; set; }
-        public decimal SubTotal => Cantidad * CostoUnitario;
-    }
+    
 }

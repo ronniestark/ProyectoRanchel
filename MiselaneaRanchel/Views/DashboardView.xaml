@@ -20,7 +20,13 @@
                 <TextBlock Text="Resumen de Hoy" FontSize="20" FontWeight="SemiBold" Foreground="#7F8C8D" VerticalAlignment="Bottom" Margin="15,0,0,4"/>
             </StackPanel>
 
-            <Button x:Name="BtnActualizar" Content="Actualizar Datos" Width="150" Height="40" Background="#3498DB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" Cursor="Hand" BorderBrush="Transparent" Click="BtnActualizar_Click"/>
+            <Button x:Name="BtnActualizar" Content="Actualizar Datos" Width="150" Height="40" Background="#3498DB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" Cursor="Hand" BorderBrush="Transparent" Click="BtnActualizar_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
 
         <!-- 2. TARJETAS DE ESTADÍSTICAS (KPIs) -->
@@ -85,7 +91,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Top Productos Vendidos -->
-            <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+            <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="20" Margin="0,0,10,0">
                 <Border.Effect>
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
@@ -94,37 +100,117 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Top 5 Productos Más Vendidos Hoy" FontSize="18" FontWeight="Bold" Foreground="#34495E" Margin="0,0,0,15"/>
 
-                    <DataGrid x:Name="DgTopProductos" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" RowHeight="35" Background="White" HeadersVisibility="Column" SelectionMode="Single" AlternatingRowBackground="#F9F9F9">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                        <TextBlock Text="🔥 Top 5 Productos Más Vendidos" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                    </StackPanel>
+
+                    <!-- TABLA MEJORADA Y ELEGANTE -->
+                    <DataGrid x:Name="DgTopProductos" Grid.Row="1" 
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                              RowHeight="45" Background="Transparent" BorderThickness="0"
+                              HeadersVisibility="Column" SelectionMode="Single"
+                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1">
+
+                        <DataGrid.Resources>
+                            <!-- Estilo de las Cabeceras -->
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#F8F9F9"/>
+                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="Padding" Value="10,12"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                            </Style>
+
+                            <!-- Estilo de las Filas (Hover y Selección) -->
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#34495E"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F4F6F7"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#EAF2F8"/>
+                                        <Setter Property="Foreground" Value="#2980B9"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+
+                            <!-- Estilo de las Celdas (Para quitar el borde punteado feo de WPF) -->
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="10,0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridCell">
+                                            <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Producto" Width="*" Binding="{Binding Descripcion}"/>
-                            <DataGridTextColumn Header="Cantidad" Width="100" Binding="{Binding TotalVendido}"/>
-                            <DataGridTextColumn Header="Total Ingreso" Width="120" Binding="{Binding TotalDinero, StringFormat=C2}"/>
+                            <!-- Columna Producto (Izquierda) -->
+                            <DataGridTextColumn Header="PRODUCTO" Width="*" Binding="{Binding Descripcion}"/>
+
+                            <!-- Columna Cantidad (Centrada) -->
+                            <DataGridTextColumn Header="CANTIDAD" Width="120" Binding="{Binding TotalVendido}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground" Value="#8E44AD"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <!-- Columna Total Dinero (Derecha y color verde) -->
+                            <DataGridTextColumn Header="TOTAL INGRESO" Width="150" Binding="{Binding TotalDinero, StringFormat=C2}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="Foreground" Value="#27AE60"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </Border>
 
             <!-- Alertas de Inventario -->
-            <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="15" Margin="10,0,0,0">
+            <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="20" Margin="10,0,0,0">
                 <Border.Effect>
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="Alertas de Sistema" FontSize="18" FontWeight="Bold" Foreground="#34495E" Margin="0,0,0,15"/>
+                    <TextBlock Text="Alertas de Sistema" FontSize="18" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
 
-                    <Border Background="#FDEDEC" BorderBrush="#E74C3C" BorderThickness="1" CornerRadius="5" Padding="15" Margin="0,0,0,15">
+                    <Border Background="#FDEDEC" BorderBrush="#E74C3C" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,15">
                         <StackPanel>
-                            <TextBlock Text="PRODUCTOS CON BAJO STOCK" Foreground="#E74C3C" FontWeight="Bold" FontSize="12"/>
-                            <TextBlock x:Name="TxtBajoStock" Text="0 productos" Foreground="#C0392B" FontSize="20" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock Text="⚠️ BAJO STOCK" Foreground="#E74C3C" FontWeight="Bold" FontSize="12"/>
+                            <TextBlock x:Name="TxtBajoStock" Text="0 productos" Foreground="#C0392B" FontSize="22" FontWeight="Bold" Margin="0,5,0,0"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="#FEF9E7" BorderBrush="#F1C40F" BorderThickness="1" CornerRadius="5" Padding="15">
+                    <Border Background="#FEF9E7" BorderBrush="#F1C40F" BorderThickness="1" CornerRadius="8" Padding="15">
                         <StackPanel>
-                            <TextBlock Text="GASTOS/COMPRAS DE HOY" Foreground="#D4AC0D" FontWeight="Bold" FontSize="12"/>
-                            <TextBlock x:Name="TxtGastosHoy" Text="$ 0.00" Foreground="#B7950B" FontSize="20" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock Text="💸 GASTOS/COMPRAS DE HOY" Foreground="#D4AC0D" FontWeight="Bold" FontSize="12"/>
+                            <TextBlock x:Name="TxtGastosHoy" Text="$ 0.00" Foreground="#B7950B" FontSize="22" FontWeight="Bold" Margin="0,5,0,0"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

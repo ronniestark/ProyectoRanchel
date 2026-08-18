@@ -12,25 +12,36 @@
         </Grid.RowDefinitions>
 
         <!-- TÍTULO -->
-        <TextBlock Grid.Row="0" Text="Módulo de Compras" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="Módulo de Compras e Ingresos" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
 
-        <!-- CONTENEDOR DE PESTAÑAS -->
-        <TabControl Grid.Row="1" Background="Transparent" BorderBrush="Transparent" Padding="0">
+        <!-- CONTENEDOR DE PESTAÑAS (ESTILO WEB) -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" Padding="0">
             <TabControl.Resources>
+                <!-- Estilo Web Moderno para los Tabs -->
                 <Style TargetType="TabItem">
-                    <Setter Property="Padding" Value="25,12"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border x:Name="Border" Padding="20,10" Margin="0,0,15,0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,3" Cursor="Hand">
+                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="5"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="#2980B9"/>
+                                        <Setter Property="Foreground" Value="#2980B9"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Foreground" Value="#7F8C8D"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#34495E"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="FontSize" Value="16"/>
                     <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Foreground" Value="#7F8C8D"/>
-                    <Setter Property="Background" Value="#E5E8E8"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Margin" Value="0,0,5,0"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Foreground" Value="#2C3E50"/>
-                            <Setter Property="Background" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </TabControl.Resources>
 
@@ -38,8 +49,7 @@
             <!-- PESTAÑA 1: NUEVA COMPRA                        -->
             <!-- ============================================== -->
             <TabItem Header="➕ Registrar Nueva Compra">
-                <!-- Solución: El Padding no va en el Grid, he envuelto el contenido en un Border -->
-                <Border Background="White" Margin="0,10,0,0" Padding="15">
+                <Border Background="Transparent" Margin="0,15,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -48,34 +58,46 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- DATOS DEL PROVEEDOR -->
-                        <Border Grid.Row="0" Background="#F8F9F9" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+                        <!-- 1. DATOS DEL PROVEEDOR Y FACTURA -->
+                        <Border Grid.Row="0" Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,15">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                            </Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                                    <TextBlock Text="Proveedor:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <ComboBox x:Name="CmbProveedor" Height="35" FontSize="14" IsEditable="True" Text="Seleccionar..."/>
+                                    <TextBlock Text="Proveedor:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <ComboBox x:Name="CmbProveedor" Height="38" FontSize="15" IsEditable="True" Text="Seleccionar..." VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Padding="5,0"/>
+                                    </Border>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="1" Margin="15,0,15,0">
-                                    <TextBlock Text="N° Factura / Remisión:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtFactura" Height="35" FontSize="14" Padding="5"/>
+                                <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                                    <TextBlock Text="N° Factura / Remisión:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <TextBox x:Name="TxtFactura" Height="38" FontSize="15" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="2" Margin="15,0,0,0">
-                                    <TextBlock Text="Fecha de Ingreso:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <DatePicker x:Name="DpFecha" Height="35" FontSize="14"/>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Fecha de Ingreso:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <DatePicker x:Name="DpFecha" Height="38" FontSize="15" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
                             </Grid>
                         </Border>
 
-                        <!-- INGRESO RÁPIDO DE PRODUCTO -->
-                        <Border Grid.Row="1" Background="#34495E" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+                        <!-- 2. INGRESO RÁPIDO DE PRODUCTO -->
+                        <Border Grid.Row="1" Background="#34495E" CornerRadius="8" Padding="20" Margin="0,0,0,15">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#2C3E50" BlurRadius="8" ShadowDepth="2" Opacity="0.4"/>
+                            </Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
@@ -84,55 +106,172 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                                    <TextBlock Text="Buscar Producto (Escribe nombre o código):" FontWeight="Bold" Foreground="White" Margin="0,0,0,5"/>
-                                    <ComboBox x:Name="CmbBuscarProducto" Height="35" FontSize="16" IsEditable="True" 
-                                              IsTextSearchEnabled="False" StaysOpenOnEdit="True" 
-                                              TextBoxBase.TextChanged="CmbBuscarProducto_TextChanged"
-                                              SelectionChanged="CmbBuscarProducto_SelectionChanged"
-                                              KeyDown="CmbBuscarProducto_KeyDown"/>
+                                <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                    <TextBlock Text="🔍 Buscar Producto (Código o Nombre):" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
+                                    <Border BorderBrush="#7F8C8D" BorderThickness="1" CornerRadius="5" Background="White">
+                                        <ComboBox x:Name="CmbBuscarProducto" Height="40" FontSize="16" IsEditable="True" 
+                                                  IsTextSearchEnabled="False" StaysOpenOnEdit="True" VerticalContentAlignment="Center" Padding="5,0"
+                                                  TextBoxBase.TextChanged="CmbBuscarProducto_TextChanged"
+                                                  SelectionChanged="CmbBuscarProducto_SelectionChanged"
+                                                  KeyDown="CmbBuscarProducto_KeyDown" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="1" Margin="10,0,10,0">
-                                    <TextBlock Text="Costo Unitario:" FontWeight="Bold" Foreground="White" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtCosto" Height="35" FontSize="16" Padding="5" TextAlignment="Right"/>
+                                <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                                    <TextBlock Text="Costo Unit. ($):" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
+                                    <Border BorderBrush="#7F8C8D" BorderThickness="1" CornerRadius="5" Background="White">
+                                        <TextBox x:Name="TxtCosto" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Right" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#D35400"/>
+                                    </Border>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="2" Margin="10,0,15,0">
-                                    <TextBlock Text="Cantidad a Sumar:" FontWeight="Bold" Foreground="White" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtCantidad" Height="35" FontSize="16" Padding="5" TextAlignment="Center" KeyDown="TxtCantidad_KeyDown"/>
+                                <StackPanel Grid.Column="2" Margin="0,0,15,0">
+                                    <TextBlock Text="Cantidad a Sumar:" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
+                                    <Border BorderBrush="#7F8C8D" BorderThickness="1" CornerRadius="5" Background="White">
+                                        <TextBox x:Name="TxtCantidad" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Center" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#2980B9" KeyDown="TxtCantidad_KeyDown"/>
+                                    </Border>
                                 </StackPanel>
 
-                                <Button x:Name="BtnAgregar" Grid.Column="3" Content="Agregar (Enter)" Width="120" Height="35" VerticalAlignment="Bottom" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Click="BtnAgregarProducto_Click"/>
+                                <Button x:Name="BtnAgregar" Grid.Column="3" Height="40" Padding="20,0" VerticalAlignment="Bottom" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnAgregarProducto_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="➕" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Agregar (Enter)"/>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </Border>
 
-                        <!-- LISTA DE COMPRAS (CARRITO) -->
-                        <DataGrid x:Name="DgListaCompras" Grid.Row="2" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="35" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" Margin="0,0,0,15">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Código" Width="100" Binding="{Binding Codigo}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Descripción del Producto" Width="*" Binding="{Binding Descripcion}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Cantidad" Width="100" Binding="{Binding Cantidad}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Costo Unit. ($)" Width="120" Binding="{Binding CostoUnitario, StringFormat=N2}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Subtotal ($)" Width="120" Binding="{Binding SubTotal, StringFormat=N2}" IsReadOnly="True" FontWeight="Bold"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <!-- 3. LISTA DE COMPRAS (CARRITO) -->
+                        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                            </Border.Effect>
 
-                        <!-- TOTALES Y ACCIÓN FINAL -->
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                            <DataGrid x:Name="DgListaCompras" Background="Transparent" BorderThickness="0" 
+                                      AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" 
+                                      HeadersVisibility="Column" SelectionMode="Single"
+                                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1">
 
-                            <Button x:Name="BtnLimpiarNueva" Grid.Column="0" HorizontalAlignment="Left" Content="Limpiar / Nueva Compra" Width="200" Height="45" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Click="BtnLimpiarNueva_Click"/>
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#F8F9F9"/>
+                                        <Setter Property="Foreground" Value="#7F8C8D"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Padding" Value="10,12"/>
+                                        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                        <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                                    </Style>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Foreground" Value="#34495E"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#F4F6F7"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#EAF2F8"/>
+                                                <Setter Property="Foreground" Value="#2980B9"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Padding" Value="10,0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="DataGridCell">
+                                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGrid.Resources>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="TOTAL FACTURA:" FontSize="20" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                                <TextBlock x:Name="TxtTotalFactura" Text="$ 0.00" FontSize="36" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Center" Margin="0,0,25,0"/>
-                                <Button x:Name="BtnProcesar" Content="PROCESAR INGRESO AL INVENTARIO" Height="50" Padding="20,0" Background="#2980B9" Foreground="White" FontSize="16" FontWeight="Bold" BorderBrush="Transparent" Click="BtnProcesarCompra_Click"/>
-                            </StackPanel>
-                        </Grid>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="CÓDIGO" Width="130" Binding="{Binding Codigo}" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="DESCRIPCIÓN DEL PRODUCTO" Width="*" Binding="{Binding Descripcion}" IsReadOnly="True"/>
+
+                                    <DataGridTextColumn Header="CANTIDAD" Width="100" Binding="{Binding Cantidad}" IsReadOnly="True">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground" Value="#2980B9"/>
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+
+                                    <DataGridTextColumn Header="COSTO UNIT. ($)" Width="140" Binding="{Binding CostoUnitario, StringFormat=C2}" IsReadOnly="True">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+
+                                    <DataGridTextColumn Header="SUBTOTAL ($)" Width="150" Binding="{Binding SubTotal, StringFormat=C2}" IsReadOnly="True">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                <Setter Property="Foreground" Value="#D35400"/>
+                                                <Setter Property="FontWeight" Value="ExtraBold"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+
+                        <!-- 4. TOTALES Y ACCIÓN FINAL -->
+                        <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="20">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="BtnLimpiarNueva" Grid.Column="0" Height="45" Padding="20,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnLimpiarNueva_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="🧹" Margin="0,0,8,0" FontSize="14"/>
+                                        <TextBlock Text="Limpiar / Nueva Compra" FontSize="14"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <TextBlock Text="TOTAL FACTURA:" FontSize="18" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                    <TextBlock x:Name="TxtTotalFactura" Text="$ 0.00" FontSize="36" FontWeight="ExtraBold" Foreground="#2C3E50" VerticalAlignment="Center" Margin="0,0,25,0"/>
+
+                                    <Button x:Name="BtnProcesar" Height="55" Padding="25,0" Background="#2980B9" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnProcesarCompra_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="📦" Margin="0,0,10,0" FontSize="20"/>
+                                            <TextBlock Text="PROCESAR INGRESO" FontSize="18" FontWeight="ExtraBold"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </Border>
             </TabItem>
@@ -140,29 +279,121 @@
             <!-- ============================================== -->
             <!-- PESTAÑA 2: HISTORIAL DE COMPRAS                -->
             <!-- ============================================== -->
-            <TabItem Header="📋 Historial de Compras (Tabla)">
-                <!-- Solución: El Padding no va en el Grid, he envuelto el contenido en un Border -->
-                <Border Background="White" Margin="0,10,0,0" Padding="15">
+            <TabItem Header="📋 Historial de Compras">
+                <Border Background="White" Margin="0,15,0,0" Padding="20" CornerRadius="8">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                    </Border.Effect>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-                            <TextBlock Text="Todas las compras registradas en la base de datos:" FontSize="16" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                            <Button Content="Actualizar Tabla" Width="120" Height="30" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Click="BtnActualizarHistorial_Click"/>
-                        </StackPanel>
+                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Todas las compras registradas en la base de datos:" FontSize="18" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center"/>
 
-                        <!-- TABLA QUE MUESTRA TODO EL SELECT DE COMPRAS -->
-                        <DataGrid x:Name="DgHistorialCompras" Grid.Row="1" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="35" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" IsReadOnly="True">
+                            <Button Grid.Column="1" Height="38" Padding="15,0" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnActualizarHistorial_Click">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="🔄" Margin="0,0,5,0"/>
+                                    <TextBlock Text="Actualizar Tabla"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <!-- TABLA HISTORIAL -->
+                        <DataGrid x:Name="DgHistorialCompras" Grid.Row="1" Background="Transparent" BorderThickness="0" 
+                                  AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" 
+                                  HeadersVisibility="Column" SelectionMode="Single" IsReadOnly="True"
+                                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1">
+
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9F9"/>
+                                    <Setter Property="Foreground" Value="#7F8C8D"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,12"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                    <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                                </Style>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#34495E"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F4F6F7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#EAF2F8"/>
+                                            <Setter Property="Foreground" Value="#2980B9"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
+
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID Compra" Width="80" Binding="{Binding CompraID}"/>
-                                <DataGridTextColumn Header="Proveedor" Width="*" Binding="{Binding Proveedor.Nombre}"/>
-                                <DataGridTextColumn Header="N° Factura" Width="150" Binding="{Binding NumeroFactura}"/>
-                                <DataGridTextColumn Header="Fecha de Compra" Width="150" Binding="{Binding FechaCompra, StringFormat=dd/MM/yyyy HH:mm}"/>
-                                <DataGridTextColumn Header="Estado" Width="120" Binding="{Binding Estado}"/>
-                                <DataGridTextColumn Header="Total Pagado ($)" Width="150" Binding="{Binding TotalCompra, StringFormat=N2}" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="ID COMPRA" Width="100" Binding="{Binding CompraID}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="Foreground" Value="#7F8C8D"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="PROVEEDOR" Width="*" Binding="{Binding Proveedor.Nombre}" FontWeight="SemiBold"/>
+                                <DataGridTextColumn Header="N° FACTURA" Width="150" Binding="{Binding NumeroFactura}"/>
+
+                                <DataGridTextColumn Header="FECHA INGRESO" Width="160" Binding="{Binding FechaCompra, StringFormat=dd/MM/yyyy HH:mm}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="ESTADO" Width="120" Binding="{Binding Estado}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="Foreground" Value="#27AE60"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="TOTAL PAGADO" Width="160" Binding="{Binding TotalCompra, StringFormat=C2}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="Foreground" Value="#D35400"/>
+                                            <Setter Property="FontWeight" Value="ExtraBold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

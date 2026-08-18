@@ -11,25 +11,36 @@
             <!-- Contenedor de Pestañas -->
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Catálogos General" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="Catálogos Generales" FontSize="32" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,20"/>
 
-        <!-- CONTENEDOR DE PESTAÑAS (TABS) -->
-        <TabControl Grid.Row="1" Background="Transparent" BorderBrush="Transparent" Padding="0">
+        <!-- CONTENEDOR DE PESTAÑAS (TABS) MEJORADO -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" Padding="0">
             <TabControl.Resources>
+                <!-- Estilo Web Moderno para los Tabs -->
                 <Style TargetType="TabItem">
-                    <Setter Property="Padding" Value="25,12"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border x:Name="Border" Padding="20,10" Margin="0,0,15,0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,3" Cursor="Hand">
+                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="5"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="#2980B9"/>
+                                        <Setter Property="Foreground" Value="#2980B9"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Foreground" Value="#7F8C8D"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#34495E"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="FontSize" Value="16"/>
                     <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Foreground" Value="#7F8C8D"/>
-                    <Setter Property="Background" Value="#E5E8E8"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Margin" Value="0,0,5,0"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Foreground" Value="#2C3E50"/>
-                            <Setter Property="Background" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </TabControl.Resources>
 
@@ -37,50 +48,120 @@
             <!-- PESTAÑA 1: CATEGORÍAS                          -->
             <!-- ============================================== -->
             <TabItem Header="📁 Categorías">
-                <Grid Background="White" Margin="0,10,0,0">
+                <Grid Background="Transparent" Margin="0,15,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Formulario Superior -->
                         <RowDefinition Height="*"/>
-                        <!-- Grilla Inferior -->
                     </Grid.RowDefinitions>
 
-                    <!-- Formulario Categorías (Arriba) -->
-                    <Border Grid.Row="0" Background="White" Padding="20" CornerRadius="8" Margin="15,15,15,20">
+                    <!-- Formulario Categorías -->
+                    <Border Grid.Row="0" Background="White" Padding="20" CornerRadius="8" Margin="0,0,0,20">
                         <Border.Effect>
                             <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                         </Border.Effect>
                         <StackPanel>
                             <TextBlock Text="Datos de la Categoría" FontSize="20" FontWeight="Bold" Foreground="#34495E" Margin="0,0,0,15"/>
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <!-- Input -->
                                     <ColumnDefinition Width="Auto"/>
-                                    <!-- Botones -->
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,20,0">
                                     <TextBlock Text="Nombre de la Categoría:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtCatNombre" Height="40" FontSize="16" Padding="5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <TextBox x:Name="TxtCatNombre" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                                    <Button x:Name="BtnCatLimpiar" Content="Limpiar" Width="100" Height="40" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Click="BtnCatLimpiar_Click"/>
-                                    <Button x:Name="BtnCatEliminar" Content="Dar de Baja" Width="120" Height="40" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Click="BtnCatEliminar_Click" Visibility="Collapsed"/>
-                                    <Button x:Name="BtnCatGuardar" Content="Guardar Categoría" Width="180" Height="40" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Click="BtnCatGuardar_Click"/>
+                                    <Button x:Name="BtnCatLimpiar" Height="40" Padding="15,0" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Cursor="Hand" Click="BtnCatLimpiar_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🧹" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Limpiar"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnCatEliminar" Height="40" Padding="15,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Cursor="Hand" Click="BtnCatEliminar_Click" Visibility="Collapsed">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🗑️" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Dar de Baja"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnCatGuardar" Height="40" Padding="20,0" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnCatGuardar_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="💾" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Guardar Categoría"/>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- Grilla Categorías (Abajo) -->
-                    <Border Grid.Row="1" Margin="15,0,15,15" BorderBrush="#ECF0F1" BorderThickness="1">
-                        <DataGrid x:Name="DgCategorias" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" SelectionChanged="DgCategorias_SelectionChanged">
+                    <!-- Grilla Categorías -->
+                    <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                        </Border.Effect>
+                        <DataGrid x:Name="DgCategorias" Background="Transparent" BorderThickness="0" 
+                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                                  RowHeight="40" HeadersVisibility="Column" SelectionMode="Single"
+                                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1" SelectionChanged="DgCategorias_SelectionChanged">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9F9"/>
+                                    <Setter Property="Foreground" Value="#7F8C8D"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,12"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                    <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                                </Style>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#34495E"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F4F6F7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#EAF2F8"/>
+                                            <Setter Property="Foreground" Value="#2980B9"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Width="80" Binding="{Binding CategoriaID}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Nombre de la Categoría" Width="*" Binding="{Binding Nombre}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ID" Width="80" Binding="{Binding CategoriaID}"/>
+                                <DataGridTextColumn Header="NOMBRE DE LA CATEGORÍA" Width="*" Binding="{Binding Nombre}" FontWeight="SemiBold"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -91,58 +172,129 @@
             <!-- PESTAÑA 2: PROVEEDORES                         -->
             <!-- ============================================== -->
             <TabItem Header="🚚 Proveedores">
-                <Grid Background="White" Margin="0,10,0,0">
+                <Grid Background="Transparent" Margin="0,15,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Formulario Superior -->
                         <RowDefinition Height="*"/>
-                        <!-- Grilla Inferior -->
                     </Grid.RowDefinitions>
 
-                    <!-- Formulario Proveedores (Arriba) -->
-                    <Border Grid.Row="0" Background="White" Padding="20" CornerRadius="8" Margin="15,15,15,20">
+                    <!-- Formulario Proveedores -->
+                    <Border Grid.Row="0" Background="White" Padding="20" CornerRadius="8" Margin="0,0,0,20">
                         <Border.Effect>
                             <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                         </Border.Effect>
                         <StackPanel>
                             <TextBlock Text="Datos del Proveedor" FontSize="20" FontWeight="Bold" Foreground="#34495E" Margin="0,0,0,15"/>
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
-                                    <!-- Input Nombre -->
                                     <ColumnDefinition Width="1.5*"/>
-                                    <!-- Input Telefono -->
                                     <ColumnDefinition Width="Auto"/>
-                                    <!-- Botones -->
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,15,0">
                                     <TextBlock Text="Nombre / Razón Social:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtProvNombre" Height="40" FontSize="16" Padding="5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <TextBox x:Name="TxtProvNombre" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1" Margin="0,0,20,0">
                                     <TextBlock Text="Teléfono de Contacto:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtProvTelefono" Height="40" FontSize="16" Padding="5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <TextBox x:Name="TxtProvTelefono" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
-                                    <Button x:Name="BtnProvLimpiar" Content="Limpiar" Width="100" Height="40" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Click="BtnProvLimpiar_Click"/>
-                                    <Button x:Name="BtnProvEliminar" Content="Dar de Baja" Width="120" Height="40" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Click="BtnProvEliminar_Click" Visibility="Collapsed"/>
-                                    <Button x:Name="BtnProvGuardar" Content="Guardar Proveedor" Width="180" Height="40" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Click="BtnProvGuardar_Click"/>
+                                    <Button x:Name="BtnProvLimpiar" Height="40" Padding="15,0" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Cursor="Hand" Click="BtnProvLimpiar_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🧹" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Limpiar"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnProvEliminar" Height="40" Padding="15,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Cursor="Hand" Click="BtnProvEliminar_Click" Visibility="Collapsed">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🗑️" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Dar de Baja"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnProvGuardar" Height="40" Padding="20,0" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnProvGuardar_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="💾" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Guardar Proveedor"/>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- Grilla Proveedores (Abajo) -->
-                    <Border Grid.Row="1" Margin="15,0,15,15" BorderBrush="#ECF0F1" BorderThickness="1">
-                        <DataGrid x:Name="DgProveedores" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" SelectionChanged="DgProveedores_SelectionChanged">
+                    <!-- Grilla Proveedores -->
+                    <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                        </Border.Effect>
+                        <DataGrid x:Name="DgProveedores" Background="Transparent" BorderThickness="0" 
+                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                                  RowHeight="40" HeadersVisibility="Column" SelectionMode="Single"
+                                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1" SelectionChanged="DgProveedores_SelectionChanged">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9F9"/>
+                                    <Setter Property="Foreground" Value="#7F8C8D"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,12"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                    <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                                </Style>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#34495E"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F4F6F7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#EAF2F8"/>
+                                            <Setter Property="Foreground" Value="#2980B9"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Width="80" Binding="{Binding ProveedorID}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Nombre del Proveedor" Width="*" Binding="{Binding Nombre}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Teléfono" Width="200" Binding="{Binding Telefono}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ID" Width="80" Binding="{Binding ProveedorID}"/>
+                                <DataGridTextColumn Header="NOMBRE DEL PROVEEDOR" Width="*" Binding="{Binding Nombre}" FontWeight="SemiBold"/>
+                                <DataGridTextColumn Header="TELÉFONO" Width="200" Binding="{Binding Telefono}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -153,64 +305,142 @@
             <!-- PESTAÑA 3: UNIDADES DE MEDIDA                  -->
             <!-- ============================================== -->
             <TabItem Header="⚖️ Unidades de Medida">
-                <Grid Background="White" Margin="0,10,0,0">
+                <Grid Background="Transparent" Margin="0,15,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Formulario Superior -->
                         <RowDefinition Height="*"/>
-                        <!-- Grilla Inferior -->
                     </Grid.RowDefinitions>
 
-                    <!-- Formulario Unidades (Arriba) -->
-                    <Border Grid.Row="0" Background="White" Padding="20" CornerRadius="8" Margin="15,15,15,20">
+                    <!-- Formulario Unidades -->
+                    <Border Grid.Row="0" Background="White" Padding="20" CornerRadius="8" Margin="0,0,0,20">
                         <Border.Effect>
                             <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                         </Border.Effect>
                         <StackPanel>
                             <TextBlock Text="Gestionar Unidades" FontSize="20" FontWeight="Bold" Foreground="#34495E" Margin="0,0,0,15"/>
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
-                                    <!-- Input Nombre -->
                                     <ColumnDefinition Width="1*"/>
-                                    <!-- Input Abreviatura -->
                                     <ColumnDefinition Width="Auto"/>
-                                    <!-- Botones -->
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,15,0">
                                     <TextBlock Text="Nombre (Ej. Kilogramo):" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtUniNombre" Height="40" FontSize="16" Padding="5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <TextBox x:Name="TxtUniNombre" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1" Margin="0,0,20,0">
                                     <TextBlock Text="Abreviatura (Ej. Kg):" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtUniAbreviatura" Height="40" FontSize="16" Padding="5"/>
+                                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <TextBox x:Name="TxtUniAbreviatura" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
-                                    <Button x:Name="BtnUniLimpiar" Content="Limpiar" Width="100" Height="40" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Click="BtnUniLimpiar_Click"/>
-                                    <Button x:Name="BtnUniEliminar" Content="Dar de Baja" Width="120" Height="40" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Click="BtnUniEliminar_Click" Visibility="Collapsed"/>
-                                    <Button x:Name="BtnUniGuardar" Content="Guardar Unidad" Width="180" Height="40" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Click="BtnUniGuardar_Click"/>
+                                    <Button x:Name="BtnUniLimpiar" Height="40" Padding="15,0" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Cursor="Hand" Click="BtnUniLimpiar_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🧹" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Limpiar"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnUniEliminar" Height="40" Padding="15,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Margin="0,0,10,0" Cursor="Hand" Click="BtnUniEliminar_Click" Visibility="Collapsed">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🗑️" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Dar de Baja"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnUniGuardar" Height="40" Padding="20,0" Background="#27AE60" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnUniGuardar_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="💾" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Guardar Unidad"/>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- Grilla Unidades (Abajo) -->
-                    <Border Grid.Row="1" Margin="15,0,15,15" BorderBrush="#ECF0F1" BorderThickness="1">
-                        <DataGrid x:Name="DgUnidades" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" SelectionChanged="DgUnidades_SelectionChanged">
+                    <!-- Grilla Unidades -->
+                    <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                        </Border.Effect>
+                        <DataGrid x:Name="DgUnidades" Background="Transparent" BorderThickness="0" 
+                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                                  RowHeight="40" HeadersVisibility="Column" SelectionMode="Single"
+                                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1" SelectionChanged="DgUnidades_SelectionChanged">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9F9"/>
+                                    <Setter Property="Foreground" Value="#7F8C8D"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Padding" Value="10,12"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                    <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                                </Style>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="#34495E"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F4F6F7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#EAF2F8"/>
+                                            <Setter Property="Foreground" Value="#2980B9"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="10,0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Width="80" Binding="{Binding UnidadMedidaID}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Nombre de la Unidad" Width="*" Binding="{Binding Nombre}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Abreviatura" Width="150" Binding="{Binding Abreviatura}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ID" Width="80" Binding="{Binding UnidadMedidaID}"/>
+                                <DataGridTextColumn Header="NOMBRE DE LA UNIDAD" Width="*" Binding="{Binding Nombre}" FontWeight="SemiBold"/>
+                                <DataGridTextColumn Header="ABREVIATURA" Width="150" Binding="{Binding Abreviatura}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="Foreground" Value="#2980B9"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
                 </Grid>
             </TabItem>
-
         </TabControl>
     </Grid>
 </UserControl>

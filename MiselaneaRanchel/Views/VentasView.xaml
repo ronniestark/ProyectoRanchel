@@ -6,9 +6,13 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Título -->
             <RowDefinition Height="Auto"/>
+            <!-- Buscador de Productos -->
             <RowDefinition Height="*"/>
+            <!-- DataGrid / Carrito -->
             <RowDefinition Height="Auto"/>
+            <!-- Panel de Cobro -->
         </Grid.RowDefinitions>
 
         <!-- 1. TÍTULO -->
@@ -32,28 +36,33 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- NUEVO: Campo de Cantidad -->
+                    <!-- Campo de Cantidad -->
                     <StackPanel Grid.Column="0" Margin="0,0,15,0">
                         <TextBlock Text="Cant:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                        <TextBox x:Name="TxtCantidad" Text="1" Width="70" Height="45" FontSize="20" Padding="5" TextAlignment="Center" Background="#F8F9F9" FontWeight="Bold"/>
+                        <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                            <TextBox x:Name="TxtCantidad" Text="1" Width="70" Height="43" FontSize="20" Padding="0,5" TextAlignment="Center" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#2980B9"/>
+                        </Border>
                     </StackPanel>
 
                     <!-- Buscador Original -->
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="Código de Barras o Producto (F3):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                        <TextBox x:Name="TxtBuscador" Height="45" FontSize="20" Padding="10,5" Background="#F8F9F9" FontWeight="SemiBold" 
-                                 KeyDown="TxtBuscador_KeyDown" TextChanged="TxtBuscador_TextChanged"/>
+
+                        <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                            <TextBox x:Name="TxtBuscador" Height="43" FontSize="20" Padding="10,5" Background="Transparent" BorderThickness="0" FontWeight="SemiBold" Foreground="#2C3E50"
+                                     KeyDown="TxtBuscador_KeyDown" TextChanged="TxtBuscador_TextChanged"/>
+                        </Border>
 
                         <!-- MENÚ EMERGENTE PARA SUGERENCIAS -->
                         <Popup x:Name="PopupSugerencias" PlacementTarget="{Binding ElementName=TxtBuscador}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=TxtBuscador, Path=ActualWidth}">
-                            <Border BorderBrush="#BDC3C7" BorderThickness="1" Background="White" MaxHeight="200">
+                            <Border BorderBrush="#BDC3C7" BorderThickness="1" Background="White" MaxHeight="200" CornerRadius="0,0,5,5">
                                 <ListBox x:Name="LstSugerencias" Background="White" BorderThickness="0" 
                                          SelectionChanged="LstSugerencias_SelectionChanged" KeyDown="LstSugerencias_KeyDown">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="5">
+                                            <StackPanel Orientation="Horizontal" Margin="5,8">
                                                 <TextBlock Text="{Binding CodigoBarras}" FontWeight="Bold" Foreground="#2980B9" Width="130"/>
-                                                <TextBlock Text="{Binding Descripcion}" Foreground="#2C3E50" FontSize="16"/>
+                                                <TextBlock Text="{Binding Descripcion}" Foreground="#34495E" FontSize="16" FontWeight="SemiBold"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
@@ -63,23 +72,119 @@
                     </StackPanel>
                 </Grid>
 
-                <Button x:Name="BtnBuscar" Grid.Column="1" Content="Buscar / Agregar" Width="150" Height="45" Margin="15,20,0,0" Background="#34495E" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" VerticalAlignment="Bottom" Click="BtnBuscar_Click"/>
+                <Button x:Name="BtnBuscar" Grid.Column="1" Height="45" Margin="15,20,0,0" Padding="20,0" Background="#34495E" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" VerticalAlignment="Bottom" Cursor="Hand" Click="BtnBuscar_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🔍" Margin="0,0,8,0" FontSize="16"/>
+                        <TextBlock Text="Buscar / Agregar" FontSize="15"/>
+                    </StackPanel>
+                </Button>
             </Grid>
         </Border>
 
         <!-- 3. DATA GRID / CARRITO (CENTRO) -->
-        <DataGrid x:Name="DgCarrito" Grid.Row="2" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" Margin="0,0,0,15">
-            <DataGrid.Effect>
+        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+            <Border.Effect>
                 <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
-            </DataGrid.Effect>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Código" Width="150" Binding="{Binding Codigo}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Descripción del Producto" Width="*" Binding="{Binding Descripcion}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Cant." Width="100" Binding="{Binding Cantidad}" FontWeight="Bold"/>
-                <DataGridTextColumn Header="Precio Unit." Width="150" Binding="{Binding PrecioVenta, StringFormat=C2}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Subtotal" Width="150" Binding="{Binding SubTotal, StringFormat=C2}" IsReadOnly="True" FontWeight="Bold"/>
-            </DataGrid.Columns>
-        </DataGrid>
+            </Border.Effect>
+
+            <DataGrid x:Name="DgCarrito" Background="Transparent" BorderThickness="0" 
+                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                      RowHeight="45" HeadersVisibility="Column" SelectionMode="Single"
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1">
+
+                <DataGrid.Resources>
+                    <!-- Estilo de las Cabeceras -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F8F9F9"/>
+                        <Setter Property="Foreground" Value="#7F8C8D"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Padding" Value="10,12"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                        <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                    </Style>
+
+                    <!-- Estilo de las Filas (Hover y Selección) -->
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#34495E"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F4F6F7"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#EAF2F8"/>
+                                <Setter Property="Foreground" Value="#2980B9"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!-- Estilo de las Celdas (Quitar el borde punteado) -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="CÓDIGO" Width="150" Binding="{Binding Codigo}"/>
+                    <DataGridTextColumn Header="DESCRIPCIÓN DEL PRODUCTO" Width="*" Binding="{Binding Descripcion}"/>
+
+                    <!-- Columna Cantidad (Centrada y Azul) -->
+                    <DataGridTextColumn Header="CANTIDAD" Width="120" Binding="{Binding Cantidad}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#2980B9"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Columna Precio Unitario (Derecha, Gris) -->
+                    <DataGridTextColumn Header="PRECIO UNIT." Width="150" Binding="{Binding PrecioVenta, StringFormat=C2}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Columna Subtotal (Derecha, Verde Fuerte) -->
+                    <DataGridTextColumn Header="SUBTOTAL" Width="160" Binding="{Binding SubTotal, StringFormat=C2}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Foreground" Value="#27AE60"/>
+                                <Setter Property="FontWeight" Value="ExtraBold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
 
         <!-- 4. PANEL DE COBRO Y TOTALES (INFERIOR) -->
         <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="20">
@@ -92,15 +197,29 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Lado Izquierdo (Info y Cancelar) -->
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                        <TextBlock Text="Artículos en carrito:" FontSize="16" Foreground="#7F8C8D" Margin="0,0,10,0"/>
-                        <TextBlock x:Name="TxtTotalArticulos" Text="0" FontSize="16" FontWeight="Bold" Foreground="#2C3E50"/>
+                        <TextBlock Text="🛒 Artículos en carrito:" FontSize="16" Foreground="#7F8C8D" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="TxtTotalArticulos" Text="0" FontSize="16" FontWeight="Bold" Foreground="#2980B9"/>
                     </StackPanel>
-                    <Button x:Name="BtnCancelarVenta" Content="Cancelar Venta" Height="40" Width="150" FontSize="14" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Left" Cursor="Hand" Click="BtnCancelarVenta_Click"/>
+
+                    <Button x:Name="BtnCancelarVenta" Height="40" Width="160" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Left" Cursor="Hand" Click="BtnCancelarVenta_Click">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="✖" Margin="0,0,8,0" FontSize="14"/>
+                            <TextBlock Text="Cancelar Venta" FontSize="14" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
+                <!-- Lado Derecho (Cobro) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+
                     <Grid Margin="0,0,30,0" VerticalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -111,21 +230,33 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Efectivo Recibido:" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,10,10"/>
-                        <TextBox x:Name="TxtEfectivo" Grid.Row="0" Grid.Column="1" Width="130" Height="40" FontSize="20" FontWeight="Bold" TextAlignment="Right" Foreground="#2980B9" Padding="5" Margin="0,0,0,10" TextChanged="TxtEfectivo_TextChanged"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Efectivo Recibido:" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,15,15"/>
+                        <Border Grid.Row="0" Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9" Margin="0,0,0,15">
+                            <TextBox x:Name="TxtEfectivo" Width="130" Height="40" FontSize="22" FontWeight="Bold" TextAlignment="Right" Foreground="#2980B9" Background="Transparent" BorderThickness="0" Padding="5,0,10,0" VerticalContentAlignment="Center" TextChanged="TxtEfectivo_TextChanged"/>
+                        </Border>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Cambio a Entregar:" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBlock x:Name="TxtCambio" Grid.Row="1" Grid.Column="1" Text="$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Cambio a Entregar:" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                        <TextBlock x:Name="TxtCambio" Grid.Row="1" Grid.Column="1" Text="$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                     </Grid>
 
-                    <Border Width="1" Background="#ECF0F1" Margin="0,0,30,0"/>
+                    <Border Width="2" Background="#ECF0F1" Margin="0,0,30,0" CornerRadius="1"/>
 
                     <StackPanel Margin="0,0,30,0" VerticalAlignment="Center">
-                        <TextBlock Text="TOTAL A PAGAR" FontSize="16" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Right"/>
-                        <TextBlock x:Name="TxtTotalPagar" Text="$ 0.00" FontSize="56" FontWeight="Bold" Foreground="#27AE60" HorizontalAlignment="Right"/>
+                        <TextBlock Text="TOTAL A PAGAR" FontSize="14" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="TxtTotalPagar" Text="$ 0.00" FontSize="56" FontWeight="ExtraBold" Foreground="#27AE60" HorizontalAlignment="Right"/>
                     </StackPanel>
 
-                    <Button x:Name="BtnCobrar" Content="COBRAR" Height="80" Width="200" FontSize="24" FontWeight="Bold" Background="#27AE60" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnCobrar_Click"/>
+                    <Button x:Name="BtnCobrar" Height="85" Width="220" Background="#27AE60" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnCobrar_Click">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="8"/>
+                            </Style>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="💲" Margin="0,0,10,0" FontSize="28"/>
+                            <TextBlock Text="COBRAR" FontSize="26" FontWeight="ExtraBold"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

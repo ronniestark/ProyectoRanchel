@@ -32,13 +32,13 @@
             </Border>
 
             <!-- Tarjeta: Alerta de Stock Bajo -->
-            <Border Grid.Column="2" Background="#FFF3CD" BorderBrush="#FFEEBA" BorderThickness="1" CornerRadius="8" Padding="15,10">
+            <Border Grid.Column="2" Background="#FDEDEC" BorderBrush="#E74C3C" BorderThickness="1" CornerRadius="8" Padding="15,10">
                 <Border.Effect>
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="PRODUCTOS STOCK BAJO" Foreground="#856404" FontSize="11" FontWeight="Bold"/>
-                    <TextBlock x:Name="TxtStockBajo" Text="0" Foreground="#D35400" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    <TextBlock Text="PRODUCTOS STOCK BAJO" Foreground="#C0392B" FontSize="11" FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtStockBajo" Text="0" Foreground="#E74C3C" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -60,7 +60,7 @@
                 <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Center">
                     <TextBlock Text="Buscar por Código o Nombre:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
                     <Grid>
-                        <TextBox x:Name="TxtBuscador" Height="35" FontSize="14" Padding="5,0,0,0" VerticalContentAlignment="Center" TextChanged="Filtros_Changed"/>
+                        <TextBox x:Name="TxtBuscador" Height="35" FontSize="15" Padding="5,0,0,0" VerticalContentAlignment="Center" TextChanged="Filtros_Changed"/>
                         <TextBlock x:Name="TxtHintBuscador" Text="Ej. Tomate, Coca Cola, 75010..." Foreground="#BDC3C7" IsHitTestVisible="False" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
                 </StackPanel>
@@ -68,35 +68,135 @@
                 <!-- Filtro por Categoría -->
                 <StackPanel Grid.Column="1" Margin="0,0,20,0" VerticalAlignment="Center">
                     <TextBlock Text="Filtrar por Categoría:" FontWeight="SemiBold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
-                    <ComboBox x:Name="CmbCategoriaFiltro" Height="35" FontSize="14" SelectionChanged="Filtros_Changed"/>
+                    <ComboBox x:Name="CmbCategoriaFiltro" Height="35" FontSize="14" VerticalContentAlignment="Center" SelectionChanged="Filtros_Changed"/>
                 </StackPanel>
 
                 <CheckBox x:Name="ChkStockBajo" Grid.Column="2" Content="Solo Stock Bajo" VerticalAlignment="Bottom" Margin="0,0,20,8" FontWeight="SemiBold" Foreground="#E67E22" Checked="Filtros_Changed" Unchecked="Filtros_Changed"/>
 
                 <!-- Botón de Acción Principal -->
-                <Button Grid.Column="3" VerticalAlignment="Bottom" Height="35" Padding="15,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnRegistrarMerma_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="⚠" Margin="0,0,5,0"/>
-                        <TextBlock Text="Registrar Merma / Ajuste"/>
+                <Button Grid.Column="3" VerticalAlignment="Bottom" Height="38" Padding="15,0" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnRegistrarMerma_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="⚠" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Registrar Merma / Ajuste" FontSize="14"/>
                     </StackPanel>
                 </Button>
             </Grid>
         </Border>
 
         <!-- 3. TABLA DE DATOS (DATAGRID) -->
-        <DataGrid x:Name="DgInventario" Grid.Row="2" Background="White" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="35" AlternatingRowBackground="#F9F9F9" HeadersVisibility="Column" SelectionMode="Single" IsReadOnly="True">
-            <DataGrid.Effect>
+        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+            <Border.Effect>
                 <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
-            </DataGrid.Effect>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Código" Width="120" Binding="{Binding CodigoBarras}"/>
-                <DataGridTextColumn Header="Descripción del Producto" Width="*" Binding="{Binding Descripcion}"/>
-                <DataGridTextColumn Header="Categoría" Width="150" Binding="{Binding Categoria.Nombre}"/>
-                <DataGridTextColumn Header="Stock Actual" Width="120" Binding="{Binding StockActual, StringFormat=N3}" FontWeight="Bold"/>
-                <DataGridTextColumn Header="Unidad" Width="80" Binding="{Binding UnidadMedida.Abreviatura}"/>
-                <DataGridTextColumn Header="Costo ($)" Width="100" Binding="{Binding PrecioCosto, StringFormat=C2}"/>
-                <DataGridTextColumn Header="Precio Venta ($)" Width="120" Binding="{Binding PrecioVenta, StringFormat=C2}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+            </Border.Effect>
+
+            <DataGrid x:Name="DgInventario" Background="Transparent" BorderThickness="0" 
+                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                      RowHeight="40" HeadersVisibility="Column" SelectionMode="Single"
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1">
+
+                <DataGrid.Resources>
+                    <!-- Estilo de las Cabeceras -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F8F9F9"/>
+                        <Setter Property="Foreground" Value="#7F8C8D"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Padding" Value="10,12"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                        <Setter Property="BorderBrush" Value="#E5E8E8"/>
+                    </Style>
+
+                    <!-- Estilo de las Filas (Hover y Selección) -->
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#34495E"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F4F6F7"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#EAF2F8"/>
+                                <Setter Property="Foreground" Value="#2980B9"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!-- Estilo de las Celdas (Quitar el borde punteado) -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="CÓDIGO" Width="130" Binding="{Binding CodigoBarras}"/>
+                    <DataGridTextColumn Header="DESCRIPCIÓN DEL PRODUCTO" Width="*" Binding="{Binding Descripcion}"/>
+                    <DataGridTextColumn Header="CATEGORÍA" Width="150" Binding="{Binding Categoria.Nombre}"/>
+
+                    <!-- Columna Stock (Centrada y destacada) -->
+                    <DataGridTextColumn Header="STOCK" Width="100" Binding="{Binding StockActual, StringFormat=N3}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#2980B9"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Columna Unidad (Centrada) -->
+                    <DataGridTextColumn Header="UNIDAD" Width="90" Binding="{Binding UnidadMedida.Abreviatura}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Columna Costo (Derecha, color sutil) -->
+                    <DataGridTextColumn Header="COSTO ($)" Width="120" Binding="{Binding PrecioCosto, StringFormat=C2}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Foreground" Value="#95A5A6"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Columna Precio Venta (Derecha, color verde) -->
+                    <DataGridTextColumn Header="PRECIO VENTA" Width="140" Binding="{Binding PrecioVenta, StringFormat=C2}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Foreground" Value="#27AE60"/>
+                                <Setter Property="FontWeight" Value="ExtraBold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
 </UserControl>

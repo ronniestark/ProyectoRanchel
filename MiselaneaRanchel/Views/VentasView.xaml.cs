@@ -7,7 +7,7 @@ using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using MiselaneaRanchel.Data;
 using MiselaneaRanchel.Models;
-using MiselaneaRanchel.Reportes; 
+using MiselaneaRanchel.Reportes;
 
 namespace MiselaneaRanchel.Views
 {
@@ -15,7 +15,6 @@ namespace MiselaneaRanchel.Views
     {
         private readonly ApplicationDbContext _context;
 
-        // Colección observable para que el DataGrid se actualice automáticamente
         private ObservableCollection<DetalleVentaTemporal> _carrito;
         private decimal _totalVenta = 0;
 
@@ -25,6 +24,13 @@ namespace MiselaneaRanchel.Views
             _context = new ApplicationDbContext();
             _carrito = new ObservableCollection<DetalleVentaTemporal>();
             DgCarrito.ItemsSource = _carrito;
+
+            // Fechas por defecto para el historial (últimos 7 días)
+            DpDesdeVentas.SelectedDate = DateTime.Now.AddDays(-7);
+            DpHastaVentas.SelectedDate = DateTime.Now;
+
+            // Cargamos la tabla del historial de inmediato
+            CargarHistorialVentas();
 
             TxtBuscador.Focus();
         }
@@ -112,12 +118,21 @@ namespace MiselaneaRanchel.Views
         // =================================================================
         // 2. LÓGICA PRINCIPAL: AGREGAR AL CARRITO (CON CANTIDAD)
         // =================================================================
+
+        private void TxtCantidad_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                BuscarYAgregarProducto();
+            }
+        }
+
         private void BuscarYAgregarProducto()
         {
             string busqueda = TxtBuscador.Text.Trim();
             if (string.IsNullOrEmpty(busqueda)) return;
 
-            // Leemos y validamos la cantidad ingresada (Si escriben letras, ponemos 1 por defecto)
+            // Validamos la cantidad ingresada
             if (!decimal.TryParse(TxtCantidad.Text, out decimal cantidadAAgregar) || cantidadAAgregar <= 0)
             {
                 cantidadAAgregar = 1;
@@ -164,7 +179,6 @@ namespace MiselaneaRanchel.Views
 
                 ActualizarTotales();
 
-                // Limpiamos el buscador y restauramos la cantidad a "1"
                 TxtCantidad.Text = "1";
                 TxtBuscador.Text = "";
                 TxtBuscador.Focus();
@@ -278,11 +292,13 @@ namespace MiselaneaRanchel.Views
                     _context.SaveChanges();
                     transaccion.Commit();
 
-                    // ¡LLAMADA A LA NUEVA CLASE PARA GENERAR EL TICKET!
                     var generador = new GeneradorTicket();
                     generador.CrearEImprimirTicket(nuevaVenta, _carrito.ToList(), efectivo, cambio);
 
                     MessageBox.Show($"¡Venta cobrada con éxito!\n\nSu Cambio es: {cambio:C2}", "Cobro Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Actualizamos la tabla del historial automáticamente
+                    CargarHistorialVentas();
 
                     LimpiarPantallaVenta();
                 }
@@ -294,9 +310,6 @@ namespace MiselaneaRanchel.Views
             }
         }
 
-        // =================================================================
-        // 5. CANCELAR Y LIMPIAR
-        // =================================================================
         private void BtnCancelarVenta_Click(object sender, RoutedEventArgs e)
         {
             if (_carrito.Count > 0)
@@ -321,6 +334,62 @@ namespace MiselaneaRanchel.Views
 
             TxtBuscador.Focus();
         }
+
+        // =================================================================
+        // 5. NUEVO: LÓGICA DEL HISTORIAL DE VENTAS
+        // =================================================================
+        private void CargarHistorialVentas()
+        {
+            try
+            {
+                DateTime desde = DpDesdeVentas.SelectedDate ?? DateTime.Today;
+                DateTime hasta = DpHastaVentas.SelectedDate ?? DateTime.Today;
+
+                // Aseguramos que abarque hasta el último segundo del día seleccionado
+                hasta = hasta.Date.AddDays(1).AddTicks(-1);
+
+                string ticketBuscar = TxtFiltroTicket.Text.Trim();
+
+                // Creamos la consulta base
+                var query = _context.Ventas
+                                    .Where(v => v.FechaVenta >= desde && v.FechaVenta <= hasta && v.Estado == "COMPLETADO");
+
+                // Filtramos por ticket si el usuario escribió algo
+                if (!string.IsNullOrEmpty(ticketBuscar))
+                {
+                    query = query.Where(v => v.NumeroTicket.Contains(ticketBuscar));
+                }
+
+                // Ordenamos las más recientes primero
+                var historial = query.OrderByDescending(v => v.FechaVenta).ToList();
+
+                DgHistorialVentas.ItemsSource = historial;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el historial: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnFiltrarHistorial_Click(object sender, RoutedEventArgs e)
+        {
+            CargarHistorialVentas();
+        }
+
+        // =========================================================
+        // ABRIR DETALLE DEL TICKET (DOBLE CLIC)
+        // =========================================================
+        private void DgHistorialVentas_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Verificamos que realmente se haya seleccionado una venta de la tabla
+            if (DgHistorialVentas.SelectedItem is Venta ventaSeleccionada)
+            {
+                // Abrimos la ventana pop-up enviándole la venta que elegimos
+                var ventanaDetalle = new DetalleVentaWindow(ventaSeleccionada);
+                ventanaDetalle.ShowDialog();
+            }
+        }
     }
+
     
 }

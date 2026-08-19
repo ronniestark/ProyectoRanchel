@@ -51,7 +51,7 @@
                 <Button Content="Compras" Style="{StaticResource MenuButtonStyle}" Click="BtnCompras_Click"/>
                 <Button Content="Corte de Caja" Style="{StaticResource MenuButtonStyle}" Click="BtnCaja_Click"/>
                 <Button Content="Reportes" Style="{StaticResource MenuButtonStyle}" Click="BtnReportes_Click"/>
-                <Button Content="Configuración" Style="{StaticResource MenuButtonStyle}" Click="BtnConfiguracion_Click"/>
+                <Button Content="Administración de Productos" Style="{StaticResource MenuButtonStyle}" Click="BtnConfiguracion_Click"/>
                 <Button Content="Catálogo General" Style="{StaticResource MenuButtonStyle}" Click="BtnCatalogos_Click"/>
             </StackPanel>
         </Border>

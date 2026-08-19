@@ -35,11 +35,11 @@ namespace MiselaneaRanchel.Reportes
 
             return new List<ReporteItemFinanciero>
             {
-                new ReporteItemFinanciero { Concepto = "Total Ingresos por Ventas POS", Monto = totalVentas.ToString("C2") },
+                new ReporteItemFinanciero { Concepto = "Total Ingresos por Ventas POS", Monto = totalVentas.ToString("C$ #,##0.00") },
                 new ReporteItemFinanciero { Concepto = $"Tickets Emitidos: {cantidadTickets}", Monto = "" },
-                new ReporteItemFinanciero { Concepto = "(-) Total Gastos / Compras pagadas", Monto = $"- {totalCompras:C2}" },
+                new ReporteItemFinanciero { Concepto = "(-) Total Gastos / Compras pagadas", Monto = $"- {totalCompras:C$ #,##0.00}" },
                 new ReporteItemFinanciero { Concepto = "-----------------------------", Monto = "" },
-                new ReporteItemFinanciero { Concepto = "= TOTAL ESTIMADO EN CAJA", Monto = totalEnCaja.ToString("C2") }
+                new ReporteItemFinanciero { Concepto = "= TOTAL ESTIMADO EN CAJA", Monto = totalEnCaja.ToString("C$ #,##0.00") }
             };
         }
 

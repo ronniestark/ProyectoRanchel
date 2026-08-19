@@ -70,8 +70,8 @@ namespace MiselaneaRanchel.Reportes
                 tabla.AddCell(new Cell().Add(new Paragraph(item.Descripcion)).SetBackgroundColor(fondoCelda));
                 tabla.AddCell(new Cell().Add(new Paragraph(item.Categoria)).SetBackgroundColor(fondoCelda));
                 tabla.AddCell(new Cell().Add(new Paragraph(item.StockActual.ToString("N2"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.CENTER));
-                tabla.AddCell(new Cell().Add(new Paragraph(item.CostoUnitario.ToString("C2"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
-                tabla.AddCell(new Cell().Add(new Paragraph(item.ValorTotal.ToString("C2"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
+                tabla.AddCell(new Cell().Add(new Paragraph(item.CostoUnitario.ToString("C$ #,##0.00"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
+                tabla.AddCell(new Cell().Add(new Paragraph(item.ValorTotal.ToString("C$ #,##0.00"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
 
                 granTotalValor += item.ValorTotal;
                 itemContador++;
@@ -79,7 +79,7 @@ namespace MiselaneaRanchel.Reportes
 
             // Fila de total
             tabla.AddCell(new Cell(1, 5).Add(new Paragraph("VALOR TOTAL DEL INVENTARIO:")).SetBackgroundColor(colorPrincipal).SetFontColor(colorBlanco).SetTextAlignment(TextAlignment.RIGHT).SetPadding(5));
-            tabla.AddCell(new Cell().Add(new Paragraph(granTotalValor.ToString("C2"))).SetBackgroundColor(colorPrincipal).SetFontColor(colorBlanco).SetTextAlignment(TextAlignment.RIGHT).SetPadding(5));
+            tabla.AddCell(new Cell().Add(new Paragraph(granTotalValor.ToString("C$ #,##0.00"))).SetBackgroundColor(colorPrincipal).SetFontColor(colorBlanco).SetTextAlignment(TextAlignment.RIGHT).SetPadding(5));
 
             document.Add(tabla);
             document.Close();

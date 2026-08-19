@@ -27,13 +27,13 @@ namespace MiselaneaRanchel.Reportes
                 new ReporteItemFinanciero { Concepto = "  ▶ Efectivo o Equivalentes (Caja)", Monto = efectivoCaja.ToString("C2") },
                 new ReporteItemFinanciero { Concepto = "  ▶ Inventario de Mercancía", Monto = valorInventario.ToString("C2") },
                 new ReporteItemFinanciero { Concepto = "-----------------------------", Monto = "" },
-                new ReporteItemFinanciero { Concepto = "= TOTAL ACTIVOS", Monto = totalActivos.ToString("C2") },
+                new ReporteItemFinanciero { Concepto = "= TOTAL ACTIVOS", Monto = totalActivos.ToString("C$ #,##0.00") },
                 new ReporteItemFinanciero { Concepto = "", Monto = "" },
                 new ReporteItemFinanciero { Concepto = "PASIVOS Y CAPITAL", Monto = "" },
                 new ReporteItemFinanciero { Concepto = "  ▶ Pasivos (Deudas)", Monto = "$ 0.00" },
-                new ReporteItemFinanciero { Concepto = "  ▶ Capital Contable", Monto = totalActivos.ToString("C2") },
+                new ReporteItemFinanciero { Concepto = "  ▶ Capital Contable", Monto = totalActivos.ToString("C$ #,##0.00") },
                 new ReporteItemFinanciero { Concepto = "-----------------------------", Monto = "" },
-                new ReporteItemFinanciero { Concepto = "= TOTAL PASIVO Y CAPITAL", Monto = totalActivos.ToString("C2") }
+                new ReporteItemFinanciero { Concepto = "= TOTAL PASIVO Y CAPITAL", Monto = totalActivos.ToString("C$ #,##0.00") }
             };
         }
 
@@ -94,7 +94,7 @@ namespace MiselaneaRanchel.Reportes
             rangoTitulo.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             worksheet.Row(1).Height = 35;
 
-            var rangoSub = worksheet.Range("A2:C2");
+            var rangoSub = worksheet.Range("A2:C$ #,##0.00");
             rangoSub.Merge().Value = "REPORTE: Balance General";
             rangoSub.Style.Font.FontSize = 14;
             rangoSub.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;

@@ -34,7 +34,7 @@ namespace MiselaneaRanchel.Reportes
                 document.SetMargins(15, 15, 15, 15);
 
                 // 3. ENCABEZADO
-                Paragraph titulo = new Paragraph("MINISUPER MAYORGA");
+                Paragraph titulo = new Paragraph("MINISUPER RM");
                 titulo.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                 titulo.SetProperty(Property.FONT_WEIGHT, 700);
                 titulo.SetFontSize(14);
@@ -91,7 +91,7 @@ namespace MiselaneaRanchel.Reportes
                     cDesc.SetFontSize(8);
                     tabla.AddCell(cDesc);
 
-                    Cell cImporte = new Cell().Add(new Paragraph(item.SubTotal.ToString("C2")));
+                    Cell cImporte = new Cell().Add(new Paragraph(item.SubTotal.ToString("C$ #,##0.00")));
                     cImporte.SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
                     cImporte.SetBorder(iText.Layout.Borders.Border.NO_BORDER);
                     cImporte.SetFontSize(8);
@@ -104,13 +104,13 @@ namespace MiselaneaRanchel.Reportes
                 document.Add(linea2);
 
                 // 5. TOTALES
-                Paragraph total = new Paragraph($"TOTAL: {venta.TotalVenta:C2}");
+                Paragraph total = new Paragraph($"TOTAL: {venta.TotalVenta:C$ #,##0.00}");
                 total.SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
                 total.SetProperty(Property.FONT_WEIGHT, 700);
                 total.SetFontSize(12);
                 document.Add(total);
 
-                Paragraph efectivoCambio = new Paragraph($"Efectivo: {efectivo:C2}\nCambio: {cambio:C2}");
+                Paragraph efectivoCambio = new Paragraph($"Efectivo: {efectivo:C$ #,##0.00}\nCambio: {cambio:C$ #,##0.00}");
                 efectivoCambio.SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
                 efectivoCambio.SetFontSize(9);
                 document.Add(efectivoCambio);

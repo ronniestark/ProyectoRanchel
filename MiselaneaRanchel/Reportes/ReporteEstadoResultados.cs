@@ -27,13 +27,13 @@ namespace MiselaneaRanchel.Reportes
 
             return new List<ReporteItemFinanciero>
             {
-                new ReporteItemFinanciero { Concepto = "Ingresos por Ventas", Monto = ventas.ToString("C2") },
-                new ReporteItemFinanciero { Concepto = "(-) Costo de lo Vendido", Monto = $"- {costo:C2}" },
+                new ReporteItemFinanciero { Concepto = "Ingresos por Ventas", Monto = ventas.ToString("C$ #,##0.00") },
+                new ReporteItemFinanciero { Concepto = "(-) Costo de lo Vendido", Monto = $"- {costo:C$ #,##0.00}" },
                 new ReporteItemFinanciero { Concepto = "-----------------------------", Monto = "" },
-                new ReporteItemFinanciero { Concepto = "= UTILIDAD BRUTA", Monto = utilidadBruta.ToString("C2") },
-                new ReporteItemFinanciero { Concepto = "(-) Gastos y Compras", Monto = $"- {gastos:C2}" },
+                new ReporteItemFinanciero { Concepto = "= UTILIDAD BRUTA", Monto = utilidadBruta.ToString("C$ #,##0.00") },
+                new ReporteItemFinanciero { Concepto = "(-) Gastos y Compras", Monto = $"- {gastos:C$ #,##0.00}" },
                 new ReporteItemFinanciero { Concepto = "-----------------------------", Monto = "" },
-                new ReporteItemFinanciero { Concepto = "= UTILIDAD NETA DEL EJERCICIO", Monto = utilidadNeta.ToString("C2") }
+                new ReporteItemFinanciero { Concepto = "= UTILIDAD NETA DEL EJERCICIO", Monto = utilidadNeta.ToString("C$ #,##0.00") }
             };
         }
 
@@ -94,7 +94,7 @@ namespace MiselaneaRanchel.Reportes
             rangoTitulo.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             worksheet.Row(1).Height = 35;
 
-            var rangoSub = worksheet.Range("A2:C2");
+            var rangoSub = worksheet.Range("A2:C$ #,##0.00");
             rangoSub.Merge().Value = "REPORTE: Estado de Resultados";
             rangoSub.Style.Font.FontSize = 14;
             rangoSub.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;

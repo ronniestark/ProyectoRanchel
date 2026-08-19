@@ -101,8 +101,8 @@ namespace MiselaneaRanchel.Reportes
                 tabla.AddCell(new Cell().Add(new Paragraph(item.Fecha.ToString("dd/MM/yyyy"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.CENTER));
                 tabla.AddCell(new Cell().Add(new Paragraph(item.Concepto)).SetBackgroundColor(fondoCelda));
                 tabla.AddCell(new Cell().Add(new Paragraph(item.Referencia)).SetBackgroundColor(fondoCelda));
-                tabla.AddCell(new Cell().Add(new Paragraph(item.Ingreso_Debe.ToString("C2"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
-                tabla.AddCell(new Cell().Add(new Paragraph(item.Egreso_Haber.ToString("C2"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
+                tabla.AddCell(new Cell().Add(new Paragraph(item.Ingreso_Debe.ToString("C$ #,##0.00"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
+                tabla.AddCell(new Cell().Add(new Paragraph(item.Egreso_Haber.ToString("C$ #,##0.00"))).SetBackgroundColor(fondoCelda).SetTextAlignment(TextAlignment.RIGHT));
 
                 totalDebe += item.Ingreso_Debe;
                 totalHaber += item.Egreso_Haber;
@@ -118,14 +118,14 @@ namespace MiselaneaRanchel.Reportes
                 .SetPadding(5);
 
             Cell celdaTotalDebe = new Cell()
-                .Add(new Paragraph(totalDebe.ToString("C2")))
+                .Add(new Paragraph(totalDebe.ToString("C$ #,##0.00")))
                 .SetTextAlignment(TextAlignment.RIGHT)
                 .SetBackgroundColor(colorPrincipal)
                 .SetFontColor(colorBlanco)
                 .SetPadding(5);
 
             Cell celdaTotalHaber = new Cell()
-                .Add(new Paragraph(totalHaber.ToString("C2")))
+                .Add(new Paragraph(totalHaber.ToString("C$ #,##0.00")))
                 .SetTextAlignment(TextAlignment.RIGHT)
                 .SetBackgroundColor(colorPrincipal)
                 .SetFontColor(colorBlanco)
@@ -141,7 +141,7 @@ namespace MiselaneaRanchel.Reportes
             decimal balance = totalDebe - totalHaber;
             Paragraph textoBalance = new Paragraph()
                 .Add(new Text($"\nBALANCE DEL PERIODO: "))
-                .Add(new Text(balance.ToString("C2")))
+                .Add(new Text(balance.ToString("C$ #,##0.00")))
                 .SetFontSize(14)
                 .SetTextAlignment(TextAlignment.RIGHT)
                 .SetFontColor(balance >= 0 ? new DeviceRgb(39, 174, 96) : new DeviceRgb(231, 76, 60)); // Verde si es positivo, rojo si es negativo

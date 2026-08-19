@@ -84,14 +84,14 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="PRECIO UNIT." Width="120" Binding="{Binding PrecioVentaHistorico, StringFormat=C2}">
+                    <DataGridTextColumn Header="PRECIO UNIT." Width="120" Binding="{Binding PrecioVentaHistorico, StringFormat=C$ \{0:N2\}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="SUBTOTAL" Width="130" Binding="{Binding SubTotal, StringFormat=C2}">
+                    <DataGridTextColumn Header="SUBTOTAL" Width="130" Binding="{Binding SubTotal, StringFormat=C$ \{0:N2\}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>

@@ -49,10 +49,10 @@ namespace MiselaneaRanchel.Views
                 _totalEsperado = _fondoInicial + _ventasDelDia - _salidasDelDia;
 
                 // Plasmar los números en las tarjetas
-                TxtFondoInicial.Text = _fondoInicial.ToString("C2");
-                TxtVentasEfectivo.Text = _ventasDelDia.ToString("C2");
-                TxtSalidasExtra.Text = $"- {_salidasDelDia.ToString("C2")}";
-                TxtTotalEsperado.Text = _totalEsperado.ToString("C2");
+                TxtFondoInicial.Text = _fondoInicial.ToString("C$ #,##0.00");
+                TxtVentasEfectivo.Text = _ventasDelDia.ToString("C$ #,##0.00");
+                TxtSalidasExtra.Text = $"- {_salidasDelDia.ToString("C$ #,##0.00")}";
+                TxtTotalEsperado.Text = _totalEsperado.ToString("C$ #,##0.00");
 
                 // Resetear la vista inferior
                 TxtEfectivoReal.Text = "";
@@ -84,7 +84,7 @@ namespace MiselaneaRanchel.Views
                 decimal diferencia = efectivoFisico - _totalEsperado;
 
                 // Mostrar la diferencia con formato de moneda
-                TxtDiferencia.Text = diferencia.ToString("C2");
+                TxtDiferencia.Text = diferencia.ToString("C$ #,##0.00");
 
                 // Lógica de colores y estados
                 if (diferencia == 0)
@@ -136,9 +136,9 @@ namespace MiselaneaRanchel.Views
             // Confirmación de seguridad
             var confirmacion = MessageBox.Show(
                 $"Vas a cerrar el turno con los siguientes datos:\n\n" +
-                $"Total Esperado: {_totalEsperado.ToString("C2")}\n" +
-                $"Total Físico: {efectivoFisico.ToString("C2")}\n" +
-                $"Diferencia: {diferencia.ToString("C2")}\n\n" +
+                $"Total Esperado: {_totalEsperado.ToString("C$ #,##0.00")}\n" +
+                $"Total Físico: {efectivoFisico.ToString("C$ #,##0.00")}\n" +
+                $"Diferencia: {diferencia.ToString("C$ #,##0.00")}\n\n" +
                 "¿Estás seguro de proceder?", "Confirmar Cierre", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (confirmacion == MessageBoxResult.Yes)

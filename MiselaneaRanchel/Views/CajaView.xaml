@@ -33,8 +33,7 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="FONDO INICIAL" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <!-- AGREGADO: x:Name -->
-                    <TextBlock x:Name="TxtFondoInicial" Text="$ 0.00" Foreground="#2C3E50" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtFondoInicial" Text="C$ 0.00" Foreground="#2C3E50" FontSize="26" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -45,8 +44,7 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="VENTAS EN EFECTIVO" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <!-- AGREGADO: x:Name -->
-                    <TextBlock x:Name="TxtVentasEfectivo" Text="$ 0.00" Foreground="#2980B9" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtVentasEfectivo" Text="C$ 0.00" Foreground="#2980B9" FontSize="26" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -57,20 +55,18 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="SALIDAS EXTRA (COMPRAS)" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <!-- AGREGADO: x:Name -->
-                    <TextBlock x:Name="TxtSalidasExtra" Text="$ 0.00" Foreground="#E74C3C" FontSize="24" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtSalidasExtra" Text="C$ 0.00" Foreground="#E74C3C" FontSize="26" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Tarjeta 4: Total Esperado -->
             <Border Grid.Column="3" Background="#34495E" CornerRadius="8" Margin="10,0,0,0" Padding="15">
                 <Border.Effect>
-                    <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                    <DropShadowEffect Color="#2C3E50" BlurRadius="8" ShadowDepth="2" Opacity="0.4"/>
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="TOTAL ESPERADO EN CAJA" Foreground="#ECF0F1" FontSize="12" FontWeight="Bold"/>
-                    <!-- AGREGADO: x:Name -->
-                    <TextBlock x:Name="TxtTotalEsperado" Text="$ 0.00" Foreground="#F1C40F" FontSize="26" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtTotalEsperado" Text="C$ 0.00" Foreground="#F1C40F" FontSize="28" FontWeight="ExtraBold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -83,38 +79,61 @@
             </Grid.ColumnDefinitions>
 
             <!-- Ingreso de Efectivo Real -->
-            <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="20">
+            <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="30">
                 <Border.Effect>
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Efectivo Real Contado:" FontSize="20" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,10"/>
-                    <TextBlock Text="Ingresa la cantidad exacta de dinero que hay físicamente en la gaveta." TextWrapping="Wrap" Foreground="#7F8C8D" Margin="0,0,0,20"/>
+                    <TextBlock Text="Efectivo Real Contado:" FontSize="22" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,10"/>
+                    <TextBlock Text="Ingresa la cantidad exacta de dinero que hay físicamente en la gaveta o registradora." TextWrapping="Wrap" FontSize="14" Foreground="#7F8C8D" Margin="0,0,0,25"/>
 
-                    <!-- AGREGADO: TextChanged para calcular en vivo -->
-                    <TextBox x:Name="TxtEfectivoReal" FontSize="36" FontWeight="Bold" Foreground="#27AE60" TextAlignment="Center" Height="60" Padding="5" Background="#EAEDED" TextChanged="TxtEfectivoReal_TextChanged"/>
+                    <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="8" Background="#F8F9F9">
+                        <TextBox x:Name="TxtEfectivoReal" FontSize="42" FontWeight="Bold" Foreground="#27AE60" TextAlignment="Center" Height="70" Padding="5,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" TextChanged="TxtEfectivoReal_TextChanged"/>
+                    </Border>
                 </StackPanel>
             </Border>
 
             <!-- Panel de Diferencia -->
-            <Border Grid.Column="1" Background="White" CornerRadius="8" Margin="10,0,0,0" Padding="20">
+            <Border Grid.Column="1" Background="White" CornerRadius="8" Margin="10,0,0,0" Padding="30">
                 <Border.Effect>
                     <DropShadowEffect Color="#BDC3C7" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Diferencia" FontSize="20" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="TxtDiferencia" Text="$ 0.00" FontSize="48" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,15,0,15"/>
-                    <TextBlock x:Name="TxtEstadoCaja" Text="ESPERANDO CONTEO" FontSize="18" FontWeight="Bold" Foreground="#BDC3C7" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Diferencia de Caja" FontSize="20" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="TxtDiferencia" Text="C$ 0.00" FontSize="56" FontWeight="ExtraBold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,15,0,20"/>
+
+                    <Border Background="#F4F6F7" CornerRadius="5" Padding="15,8">
+                        <TextBlock x:Name="TxtEstadoCaja" Text="ESPERANDO CONTEO..." FontSize="16" FontWeight="Bold" Foreground="#BDC3C7" HorizontalAlignment="Center"/>
+                    </Border>
                 </StackPanel>
             </Border>
         </Grid>
 
         <!-- 4. BOTONES DE ACCIÓN -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <!-- AGREGADO: Click -->
-            <Button x:Name="BtnReporte" Content="Actualizar / Refrescar Datos" Width="220" Height="45" FontSize="16" FontWeight="Bold" Background="#95A5A6" Foreground="White" BorderBrush="Transparent" Margin="0,0,15,0" Click="BtnRefrescar_Click"/>
-            <!-- AGREGADO: Click -->
-            <Button x:Name="BtnCerrarTurno" Content="CERRAR TURNO (GUARDAR)" Width="230" Height="45" FontSize="16" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" Click="BtnCerrarTurno_Click"/>
+            <Button x:Name="BtnReporte" Height="45" Padding="20,0" FontSize="15" FontWeight="Bold" Background="#95A5A6" Foreground="White" BorderBrush="Transparent" Margin="0,0,15,0" Cursor="Hand" Click="BtnRefrescar_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                    <TextBlock Text="Actualizar / Refrescar Datos"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="BtnCerrarTurno" Height="45" Padding="25,0" FontSize="16" FontWeight="Bold" Background="#E74C3C" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnCerrarTurno_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🔒" Margin="0,0,10,0"/>
+                    <TextBlock Text="CERRAR TURNO (GUARDAR)"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

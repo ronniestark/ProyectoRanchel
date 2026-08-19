@@ -176,7 +176,7 @@
                     </DataGridTextColumn>
 
                     <!-- Columna Costo (Derecha, color sutil) -->
-                    <DataGridTextColumn Header="COSTO ($)" Width="120" Binding="{Binding PrecioCosto, StringFormat=C2}">
+                    <DataGridTextColumn Header="COSTO ($)" Width="120" Binding="{Binding PrecioCosto, StringFormat=C$ \{0:N2\}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -186,7 +186,7 @@
                     </DataGridTextColumn>
 
                     <!-- Columna Precio Venta (Derecha, color verde) -->
-                    <DataGridTextColumn Header="PRECIO VENTA" Width="140" Binding="{Binding PrecioVenta, StringFormat=C2}">
+                    <DataGridTextColumn Header="PRECIO VENTA" Width="140" Binding="{Binding PrecioVenta, StringFormat=C$ \{0:N2\}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>

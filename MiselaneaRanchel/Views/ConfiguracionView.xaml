@@ -253,7 +253,7 @@
                         </DataGridTextColumn>
 
                         <!-- Costo Alineado a la Derecha -->
-                        <DataGridTextColumn Header="COSTO" Width="110" Binding="{Binding PrecioCosto, StringFormat=C2}">
+                        <DataGridTextColumn Header="COSTO" Width="110" Binding="{Binding PrecioCosto, StringFormat=C$ \{0:N2\}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -274,7 +274,7 @@
                         </DataGridTextColumn>
 
                         <!-- Precio de Venta Destacado -->
-                        <DataGridTextColumn Header="PRECIO VENTA" Width="130" Binding="{Binding PrecioVenta, StringFormat=C2}">
+                        <DataGridTextColumn Header="PRECIO VENTA" Width="130" Binding="{Binding PrecioVenta, StringFormat=C$ \{0:N2\}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>

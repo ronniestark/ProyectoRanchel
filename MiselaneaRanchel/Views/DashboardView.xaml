@@ -45,7 +45,7 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="INGRESOS POR VENTAS" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <TextBlock x:Name="TxtVentasHoy" Text="$ 0.00" Foreground="#27AE60" FontSize="28" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtVentasHoy" Text="C$ 0.00" Foreground="#27AE60" FontSize="28" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -56,7 +56,7 @@
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="GANANCIA ESTIMADA" Foreground="#7F8C8D" FontSize="12" FontWeight="Bold"/>
-                    <TextBlock x:Name="TxtGananciaHoy" Text="$ 0.00" Foreground="#2980B9" FontSize="28" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtGananciaHoy" Text="C$ 0.00" Foreground="#2980B9" FontSize="28" FontWeight="Bold" Margin="0,10,0,0"/>
                 </StackPanel>
             </Border>
 
@@ -141,7 +141,7 @@
                                 </Style.Triggers>
                             </Style>
 
-                            <!-- Estilo de las Celdas (Para quitar el borde punteado feo de WPF) -->
+                            <!-- Estilo de las Celdas -->
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="Padding" Value="10,0"/>
@@ -178,7 +178,7 @@
                             </DataGridTextColumn>
 
                             <!-- Columna Total Dinero (Derecha y color verde) -->
-                            <DataGridTextColumn Header="TOTAL INGRESO" Width="150" Binding="{Binding TotalDinero, StringFormat=C2}">
+                            <DataGridTextColumn Header="TOTAL INGRESO" Width="150" Binding="{Binding TotalDinero, StringFormat=C$ \{0:N2\}}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -210,7 +210,7 @@
                     <Border Background="#FEF9E7" BorderBrush="#F1C40F" BorderThickness="1" CornerRadius="8" Padding="15">
                         <StackPanel>
                             <TextBlock Text="💸 GASTOS/COMPRAS DE HOY" Foreground="#D4AC0D" FontWeight="Bold" FontSize="12"/>
-                            <TextBlock x:Name="TxtGastosHoy" Text="$ 0.00" Foreground="#B7950B" FontSize="22" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="TxtGastosHoy" Text="C$ 0.00" Foreground="#B7950B" FontSize="22" FontWeight="Bold" Margin="0,5,0,0"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

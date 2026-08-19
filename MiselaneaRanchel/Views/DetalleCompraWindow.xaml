@@ -90,14 +90,14 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="COSTO" Width="100" Binding="{Binding CostoUnitario, StringFormat=C2}">
+                    <DataGridTextColumn Header="COSTO" Width="100" Binding="{Binding CostoUnitario, StringFormat=C$ \{0:N2\}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="SUBTOTAL" Width="110" Binding="{Binding SubTotal, StringFormat=C2}">
+                    <DataGridTextColumn Header="SUBTOTAL" Width="110" Binding="{Binding SubTotal, StringFormat=C$ \{0:N2\}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -127,7 +127,7 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="TOTAL FACTURA:" FontSize="16" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock x:Name="TxtTotalFactura" Text="$ 0.00" FontSize="28" FontWeight="ExtraBold" Foreground="#27AE60" VerticalAlignment="Center"/>
+                <TextBlock x:Name="TxtTotalFactura" Text="C$ 0.00" FontSize="28" FontWeight="ExtraBold" Foreground="#27AE60" VerticalAlignment="Center"/>
             </StackPanel>
         </Grid>
     </Grid>

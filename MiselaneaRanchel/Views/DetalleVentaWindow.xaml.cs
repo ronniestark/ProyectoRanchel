@@ -26,7 +26,7 @@ namespace MiselaneaRanchel.Views
                 // Llenamos la cabecera (TextBlocks)
                 TxtTicket.Text = venta.NumeroTicket;
                 TxtFecha.Text = venta.FechaVenta.ToString("dd/MM/yyyy HH:mm");
-                TxtTotalFactura.Text = venta.TotalVenta.ToString("C2");
+                TxtTotalFactura.Text = venta.TotalVenta.ToString("C$ #,##0.00");
 
                 // Buscamos los detalles en la base de datos unidos con la tabla Productos
                 var detalles = _context.DetalleVentas

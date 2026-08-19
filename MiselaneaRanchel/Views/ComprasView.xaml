@@ -118,7 +118,7 @@
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1" Margin="0,0,15,0">
-                                    <TextBlock Text="Costo Unit. ($):" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
+                                    <TextBlock Text="Costo Unit. (C$):" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
                                     <Border BorderBrush="#7F8C8D" BorderThickness="1" CornerRadius="5" Background="White">
                                         <TextBox x:Name="TxtCosto" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Right" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#D35400"/>
                                     </Border>
@@ -209,7 +209,7 @@
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
 
-                                    <DataGridTextColumn Header="COSTO UNIT. ($)" Width="140" Binding="{Binding CostoUnitario, StringFormat=C2}" IsReadOnly="True">
+                                    <DataGridTextColumn Header="COSTO UNIT. (C$)" Width="140" Binding="{Binding CostoUnitario, StringFormat=C$ \{0:N2\}}" IsReadOnly="True">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -218,7 +218,7 @@
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
 
-                                    <DataGridTextColumn Header="SUBTOTAL ($)" Width="150" Binding="{Binding SubTotal, StringFormat=C2}" IsReadOnly="True">
+                                    <DataGridTextColumn Header="SUBTOTAL (C$)" Width="150" Binding="{Binding SubTotal, StringFormat=C$ \{0:N2\}}" IsReadOnly="True">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -256,7 +256,7 @@
 
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                     <TextBlock Text="TOTAL FACTURA:" FontSize="18" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                                    <TextBlock x:Name="TxtTotalFactura" Text="$ 0.00" FontSize="36" FontWeight="ExtraBold" Foreground="#2C3E50" VerticalAlignment="Center" Margin="0,0,25,0"/>
+                                    <TextBlock x:Name="TxtTotalFactura" Text="C$ 0.00" FontSize="36" FontWeight="ExtraBold" Foreground="#2C3E50" VerticalAlignment="Center" Margin="0,0,25,0"/>
 
                                     <Button x:Name="BtnProcesar" Height="55" Padding="25,0" Background="#2980B9" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnProcesarCompra_Click">
                                         <Button.Resources>
@@ -296,7 +296,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Todas las compras registradas en la base de datos:" FontSize="18" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center"/>
-                           
+
                             <Button Grid.Column="1" Height="38" Padding="15,0" Background="#95A5A6" Foreground="White" FontWeight="Bold" BorderBrush="Transparent" Cursor="Hand" Click="BtnActualizarHistorial_Click">
                                 <Button.Resources>
                                     <Style TargetType="Border">
@@ -386,7 +386,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <DataGridTextColumn Header="TOTAL PAGADO" Width="160" Binding="{Binding TotalCompra, StringFormat=C2}">
+                                <DataGridTextColumn Header="TOTAL PAGADO" Width="160" Binding="{Binding TotalCompra, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>

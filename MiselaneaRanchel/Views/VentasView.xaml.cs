@@ -196,7 +196,7 @@ namespace MiselaneaRanchel.Views
         private void ActualizarTotales()
         {
             _totalVenta = _carrito.Sum(x => x.SubTotal);
-            TxtTotalPagar.Text = _totalVenta.ToString("C2");
+            TxtTotalPagar.Text = _totalVenta.ToString("C$ #,##0.00");
             TxtTotalArticulos.Text = _carrito.Sum(x => x.Cantidad).ToString("N2");
             CalcularCambio();
         }
@@ -211,11 +211,11 @@ namespace MiselaneaRanchel.Views
             if (decimal.TryParse(TxtEfectivo.Text, out decimal efectivoRecibido))
             {
                 decimal cambio = efectivoRecibido - _totalVenta;
-                TxtCambio.Text = cambio < 0 ? "$ 0.00" : cambio.ToString("C2");
+                TxtCambio.Text = cambio < 0 ? "C$ 0.00" : cambio.ToString("C$ #,##0.00");
             }
             else
             {
-                TxtCambio.Text = "$ 0.00";
+                TxtCambio.Text = "C$ 0.00";
             }
         }
 
@@ -295,7 +295,7 @@ namespace MiselaneaRanchel.Views
                     var generador = new GeneradorTicket();
                     generador.CrearEImprimirTicket(nuevaVenta, _carrito.ToList(), efectivo, cambio);
 
-                    MessageBox.Show($"¡Venta cobrada con éxito!\n\nSu Cambio es: {cambio:C2}", "Cobro Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"¡Venta cobrada con éxito!\n\nSu Cambio es: {cambio:C$ #,##0.00}", "Cobro Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Actualizamos la tabla del historial automáticamente
                     CargarHistorialVentas();

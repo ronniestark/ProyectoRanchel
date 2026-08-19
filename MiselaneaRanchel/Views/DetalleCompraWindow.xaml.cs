@@ -28,7 +28,7 @@ namespace MiselaneaRanchel.Views
                 TxtProveedor.Text = compra.Proveedor?.Nombre ?? "Proveedor Desconocido";
                 TxtFactura.Text = compra.NumeroFactura;
                 TxtFecha.Text = compra.FechaCompra.ToString("dd/MM/yyyy HH:mm");
-                TxtTotalFactura.Text = compra.TotalCompra.ToString("C2");
+                TxtTotalFactura.Text = compra.TotalCompra.ToString("C$ #,##0.00");
 
                 // Buscamos los detalles en la base de datos unidos con la tabla Productos
                 var detalles = _context.DetalleCompras

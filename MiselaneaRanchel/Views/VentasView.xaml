@@ -182,7 +182,7 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="PRECIO UNIT." Width="150" Binding="{Binding PrecioVenta, StringFormat=C2}">
+                                <DataGridTextColumn Header="PRECIO UNIT." Width="150" Binding="{Binding PrecioVenta, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -190,7 +190,7 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="SUBTOTAL" Width="160" Binding="{Binding SubTotal, StringFormat=C2}">
+                                <DataGridTextColumn Header="SUBTOTAL" Width="160" Binding="{Binding SubTotal, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -249,14 +249,14 @@
                                         <TextBox x:Name="TxtEfectivo" Width="130" Height="40" FontSize="22" FontWeight="Bold" TextAlignment="Right" Foreground="#2980B9" Background="Transparent" BorderThickness="0" Padding="5,0,10,0" VerticalContentAlignment="Center" TextChanged="TxtEfectivo_TextChanged"/>
                                     </Border>
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Cambio a Entregar:" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                                    <TextBlock x:Name="TxtCambio" Grid.Row="1" Grid.Column="1" Text="$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                    <TextBlock x:Name="TxtCambio" Grid.Row="1" Grid.Column="1" Text="C$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                                 </Grid>
 
                                 <Border Width="2" Background="#ECF0F1" Margin="0,0,30,0" CornerRadius="1"/>
 
                                 <StackPanel Margin="0,0,30,0" VerticalAlignment="Center">
                                     <TextBlock Text="TOTAL A PAGAR" FontSize="14" FontWeight="Bold" Foreground="#7F8C8D" HorizontalAlignment="Right"/>
-                                    <TextBlock x:Name="TxtTotalPagar" Text="$ 0.00" FontSize="56" FontWeight="ExtraBold" Foreground="#27AE60" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TxtTotalPagar" Text="C$ 0.00" FontSize="56" FontWeight="ExtraBold" Foreground="#27AE60" HorizontalAlignment="Right"/>
                                 </StackPanel>
 
                                 <Button x:Name="BtnCobrar" Height="85" Width="220" Background="#27AE60" Foreground="White" BorderBrush="Transparent" Cursor="Hand" Click="BtnCobrar_Click">
@@ -266,7 +266,7 @@
                                         </Style>
                                     </Button.Resources>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="💲" Margin="0,0,10,0" FontSize="28"/>
+                                        <TextBlock Text="C💲" Margin="0,0,10,0" FontSize="28"/>
                                         <TextBlock Text="COBRAR" FontSize="26" FontWeight="ExtraBold"/>
                                     </StackPanel>
                                 </Button>
@@ -397,7 +397,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <DataGridTextColumn Header="EFECTIVO" Width="140" Binding="{Binding EfectivoRecibido, StringFormat=C2}">
+                                <DataGridTextColumn Header="EFECTIVO" Width="140" Binding="{Binding EfectivoRecibido, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -406,7 +406,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <DataGridTextColumn Header="CAMBIO" Width="140" Binding="{Binding CambioEntregado, StringFormat=C2}">
+                                <DataGridTextColumn Header="CAMBIO" Width="140" Binding="{Binding CambioEntregado, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -415,7 +415,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <DataGridTextColumn Header="TOTAL COBRADO" Width="180" Binding="{Binding TotalVenta, StringFormat=C2}">
+                                <DataGridTextColumn Header="TOTAL COBRADO" Width="180" Binding="{Binding TotalVenta, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>

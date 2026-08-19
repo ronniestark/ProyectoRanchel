@@ -54,8 +54,8 @@ namespace MiselaneaRanchel.Views
                 decimal totalArticulos = detallesHoy.Sum(d => d.Cantidad);
                 int totalTickets = ventasHoy.Count;
 
-                TxtVentasHoy.Text = totalVentas.ToString("C2");
-                TxtGananciaHoy.Text = totalGanancia.ToString("C2");
+                TxtVentasHoy.Text = totalVentas.ToString("C$ #,##0.00");
+                TxtGananciaHoy.Text = totalGanancia.ToString("C$ #,##0.00");
                 TxtArticulosVendidos.Text = totalArticulos.ToString("N0");
                 TxtTicketsHoy.Text = totalTickets.ToString("N0");
 
@@ -64,7 +64,7 @@ namespace MiselaneaRanchel.Views
                     .Where(c => c.FechaCompra.Date == hoy && c.Estado == "COMPLETADO")
                     .Sum(c => (decimal?)c.TotalCompra) ?? 0;
 
-                TxtGastosHoy.Text = totalGastos.ToString("C2");
+                TxtGastosHoy.Text = totalGastos.ToString("C$ #,##0.00");
 
                 // Productos con 5 o menos en stock (Modifica el 5 si tienes una propiedad "StockMinimo")
                 int bajoStock = _context.Productos.Count(p => p.StockActual <= 5 && p.Activo == true);

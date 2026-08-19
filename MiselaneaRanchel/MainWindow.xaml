@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MiselaneaRanchel.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Sistema de Administración" Height="768" Width="1024"
+        Title="Sistema de Administración - MiNISUPER RM" Height="768" Width="1024"
         WindowStartupLocation="CenterScreen">
 
     <!-- Estilos para los botones laterales -->
@@ -11,15 +11,17 @@
             <Setter Property="Foreground" Value="#BDC3C7"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Height" Value="50"/>
+            <!-- Fijamos el ancho para que el texto no se deforme al ocultar el menú -->
+            <Setter Property="Width" Value="240"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="10,5"/>
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="20,0,0,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
+                            <ContentPresenter VerticalAlignment="Center" Margin="10,0,0,0"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -35,28 +37,122 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <!-- Auto permite que la columna cambie de tamaño junto con la animación del menú -->
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- BARRA LATERAL OSCURA -->
-        <Border Grid.Column="0" Background="#1A252F">
-            <StackPanel Margin="0,30,0,0">
-                <TextBlock Text="MISCELÁNEA RM" Foreground="White" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+        <!-- El ClipToBounds="True" es el truco mágico que oculta el texto suavemente -->
+        <Border x:Name="Sidebar" Grid.Column="0" Background="#1A252F" Width="260" ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <!-- Botones con eventos Click -->
-                <Button Content="Dashboard (Inicio)" Style="{StaticResource MenuButtonStyle}" Click="BtnDashboard_Click"/>
-                <Button Content="Punto de Venta" Style="{StaticResource MenuButtonStyle}" Click="BtnVentas_Click"/>
-                <Button Content="Inventario" Style="{StaticResource MenuButtonStyle}" Click="BtnInventario_Click"/>
-                <Button Content="Compras" Style="{StaticResource MenuButtonStyle}" Click="BtnCompras_Click"/>
-                <Button Content="Corte de Caja" Style="{StaticResource MenuButtonStyle}" Click="BtnCaja_Click"/>
-                <Button Content="Reportes" Style="{StaticResource MenuButtonStyle}" Click="BtnReportes_Click"/>
-                <Button Content="Administración de Productos" Style="{StaticResource MenuButtonStyle}" Click="BtnConfiguracion_Click"/>
-                <Button Content="Catálogo General" Style="{StaticResource MenuButtonStyle}" Click="BtnCatalogos_Click"/>
-            </StackPanel>
+                <!-- CABECERA (Botón Hamburguesa y Logo) -->
+                <!-- Width="260" fijo para que no se encoja el contenido interior -->
+                <Grid Grid.Row="0" Width="260" HorizontalAlignment="Left" Margin="0,20,0,30">
+
+                    <!-- Botón Hamburguesa -->
+                    <ToggleButton x:Name="BtnMenuToggle" Width="40" Height="40" HorizontalAlignment="Left" Margin="15,0,0,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                        <ToggleButton.Template>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border Background="Transparent">
+                                    <TextBlock Text="☰" FontSize="26" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </ToggleButton.Template>
+
+                        <!-- Animaciones XAML (Se expande y se contrae sin usar C#) -->
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Sidebar" Storyboard.TargetProperty="Width" To="70" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Sidebar" Storyboard.TargetProperty="Width" To="260" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+
+                    <!-- Nombre del Negocio -->
+                    <TextBlock Text="MINISUPER  RM" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="65,0,0,0"/>
+                </Grid>
+
+                <!-- BOTONES DEL MENÚ -->
+                <StackPanel Grid.Row="1">
+
+                    <!-- ToolTip permite ver el nombre del botón cuando el menú está oculto -->
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnDashboard_Click" ToolTip="Dashboard (Inicio)">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Dashboard (Inicio)" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnVentas_Click" ToolTip="Punto de Venta">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🛒" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Punto de Venta" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnInventario_Click" ToolTip="Control de Inventario">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📦" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Inventario" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnCompras_Click" ToolTip="Compras e Ingresos">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🚚" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Compras e Ingresos" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnCaja_Click" ToolTip="Corte de Caja">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="💵" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Corte de Caja" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnReportes_Click" ToolTip="Reportes y Estadísticas">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📈" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Reportes" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnConfiguracion_Click" ToolTip="Administración de Productos">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚙️" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Admin. de Productos" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}" Click="BtnCatalogos_Click" ToolTip="Catálogos Generales">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📁" FontSize="20" Width="30" TextAlignment="Center"/>
+                            <TextBlock Text="Catálogo General" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <!-- CONTENIDO PRINCIPAL -->
+        <!-- CONTENIDO PRINCIPAL (Donde cargan tus pantallas) -->
         <Border Grid.Column="1" Background="#ECF0F1">
             <ContentControl x:Name="MainContentControl">
                 <!-- Se llenará dinámicamente desde el código -->

@@ -23,12 +23,10 @@ namespace MiselaneaRanchel.Views
             InitializeComponent();
             _context = new ApplicationDbContext();
 
-            // Fechas por defecto
             DpDesde.SelectedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             DpHasta.SelectedDate = DateTime.Now;
         }
 
-        // Inicializamos el motor del navegador para el PDF
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             await PdfViewer.EnsureCoreWebView2Async(null);
@@ -41,34 +39,26 @@ namespace MiselaneaRanchel.Views
             return (inicio, fin.Date.AddDays(1).AddTicks(-1));
         }
 
-        // ===============================================
-        // 1. GENERAR VISTAS PREVIAS (Muestra el PDF en pantalla)
-        // ===============================================
-
         private void MostrarPdfEnVisor(string rutaTemporal)
         {
             if (PdfViewer.CoreWebView2 != null)
-            {
-                // Le decimos al visor que abra el archivo generado
                 PdfViewer.CoreWebView2.Navigate(rutaTemporal);
-            }
         }
 
+        // ===============================================
+        // BOTONES DE CONTABILIDAD
+        // ===============================================
         private void BtnAsientoContable_Click(object sender, RoutedEventArgs e)
         {
             _reporteActivo = "Asiento";
             var fechas = ObtenerFechas();
-
             var reporte = new ReporteAsientoContable();
             var datos = reporte.ObtenerDatos(_context, fechas.Inicio, fechas.Fin);
             _datosActuales = datos;
 
             TxtTituloReporte.Text = $"Vista Previa: Libro Diario ({fechas.Inicio:dd/MM/yyyy} al {fechas.Fin:dd/MM/yyyy})";
-
-            // Crear archivo temporal
             string rutaTemporal = Path.Combine(Path.GetTempPath(), $"Preview_Asiento_{Guid.NewGuid()}.pdf");
             reporte.GenerarPDF(rutaTemporal, datos, fechas.Inicio, fechas.Fin);
-
             MostrarPdfEnVisor(rutaTemporal);
         }
 
@@ -76,17 +66,13 @@ namespace MiselaneaRanchel.Views
         {
             _reporteActivo = "Resultados";
             var fechas = ObtenerFechas();
-
             var reporte = new ReporteEstadoResultados();
             var datos = reporte.ObtenerDatos(_context, fechas.Inicio, fechas.Fin, out decimal utilidadNeta);
             _datosActuales = datos;
 
-            TxtTituloReporte.Text = $"Vista Previa: Estado de Resultados";
-
-            // Crear archivo temporal
+            TxtTituloReporte.Text = "Vista Previa: Estado de Resultados";
             string rutaTemporal = Path.Combine(Path.GetTempPath(), $"Preview_Resultados_{Guid.NewGuid()}.pdf");
             reporte.GenerarPDF(rutaTemporal, datos, fechas.Inicio, fechas.Fin);
-
             MostrarPdfEnVisor(rutaTemporal);
         }
 
@@ -94,24 +80,66 @@ namespace MiselaneaRanchel.Views
         {
             _reporteActivo = "Balance";
             var fechas = ObtenerFechas();
-
             var reporte = new ReporteBalanceGeneral();
             var datos = reporte.ObtenerDatos(_context, fechas.Fin, out decimal totalActivos);
             _datosActuales = datos;
 
             TxtTituloReporte.Text = $"Vista Previa: Balance General al {fechas.Fin:dd/MM/yyyy}";
-
-            // Crear archivo temporal
             string rutaTemporal = Path.Combine(Path.GetTempPath(), $"Preview_Balance_{Guid.NewGuid()}.pdf");
             reporte.GenerarPDF(rutaTemporal, datos, fechas.Fin);
-
             MostrarPdfEnVisor(rutaTemporal);
         }
 
         // ===============================================
-        // 2. EXPORTACIONES NORMALES (Guardar archivo final)
+        // BOTONES DE INVENTARIO
         // ===============================================
+        private void BtnStock_Click(object sender, RoutedEventArgs e)
+        {
+            _reporteActivo = "Stock";
+            var reporte = new ReporteStock();
+            var datos = reporte.ObtenerDatos(_context);
+            _datosActuales = datos;
 
+            TxtTituloReporte.Text = "Vista Previa: Stock Actual en Bodega";
+            string rutaTemporal = Path.Combine(Path.GetTempPath(), $"Preview_Stock_{Guid.NewGuid()}.pdf");
+            reporte.GenerarPDF(rutaTemporal, datos, DateTime.Now);
+            MostrarPdfEnVisor(rutaTemporal);
+        }
+
+        private void BtnKardex_Click(object sender, RoutedEventArgs e)
+        {
+            _reporteActivo = "Kardex";
+            var fechas = ObtenerFechas();
+            var reporte = new ReporteKardex();
+            var datos = reporte.ObtenerDatos(_context, fechas.Inicio, fechas.Fin);
+            _datosActuales = datos;
+
+            TxtTituloReporte.Text = $"Vista Previa: Kardex ({fechas.Inicio:dd/MM/yyyy} al {fechas.Fin:dd/MM/yyyy})";
+            string rutaTemporal = Path.Combine(Path.GetTempPath(), $"Preview_Kardex_{Guid.NewGuid()}.pdf");
+            reporte.GenerarPDF(rutaTemporal, datos, fechas.Inicio, fechas.Fin);
+            MostrarPdfEnVisor(rutaTemporal);
+        }
+
+        // ===============================================
+        // BOTONES DE CAJA
+        // ===============================================
+        private void BtnCierreCaja_Click(object sender, RoutedEventArgs e)
+        {
+            _reporteActivo = "CierreCaja";
+            var fechas = ObtenerFechas(); // Se usa solo "Hasta" como el día a evaluar
+            var reporte = new ReporteCierreCaja();
+            var datos = reporte.ObtenerDatos(_context, fechas.Fin);
+            _datosActuales = datos;
+
+            TxtTituloReporte.Text = $"Vista Previa: Cierre de Caja ({fechas.Fin:dd/MM/yyyy})";
+            string rutaTemporal = Path.Combine(Path.GetTempPath(), $"Preview_Cierre_{Guid.NewGuid()}.pdf");
+            reporte.GenerarPDF(rutaTemporal, datos, fechas.Fin);
+            MostrarPdfEnVisor(rutaTemporal);
+        }
+
+        // ===============================================
+        // EXPORTACIONES
+        // ===============================================
         private void BtnExportarPDF_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(_reporteActivo) || _datosActuales == null)
@@ -132,14 +160,14 @@ namespace MiselaneaRanchel.Views
                 {
                     var fechas = ObtenerFechas();
 
-                    if (_reporteActivo == "Asiento")
-                        new ReporteAsientoContable().GenerarPDF(dialog.FileName, (List<AsientoItem>)_datosActuales, fechas.Inicio, fechas.Fin);
-                    else if (_reporteActivo == "Resultados")
-                        new ReporteEstadoResultados().GenerarPDF(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales, fechas.Inicio, fechas.Fin);
-                    else if (_reporteActivo == "Balance")
-                        new ReporteBalanceGeneral().GenerarPDF(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales, fechas.Fin);
+                    if (_reporteActivo == "Asiento") new ReporteAsientoContable().GenerarPDF(dialog.FileName, (List<AsientoItem>)_datosActuales, fechas.Inicio, fechas.Fin);
+                    else if (_reporteActivo == "Resultados") new ReporteEstadoResultados().GenerarPDF(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales, fechas.Inicio, fechas.Fin);
+                    else if (_reporteActivo == "Balance") new ReporteBalanceGeneral().GenerarPDF(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales, fechas.Fin);
+                    else if (_reporteActivo == "Stock") new ReporteStock().GenerarPDF(dialog.FileName, (List<ItemStock>)_datosActuales, DateTime.Now);
+                    else if (_reporteActivo == "Kardex") new ReporteKardex().GenerarPDF(dialog.FileName, (List<ItemKardex>)_datosActuales, fechas.Inicio, fechas.Fin);
+                    else if (_reporteActivo == "CierreCaja") new ReporteCierreCaja().GenerarPDF(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales, fechas.Fin);
 
-                    MessageBox.Show("Documento PDF guardado correctamente en tu computadora.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Documento PDF guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
@@ -166,14 +194,16 @@ namespace MiselaneaRanchel.Views
             {
                 try
                 {
-                    if (_reporteActivo == "Asiento")
-                        new ReporteAsientoContable().GenerarExcel(dialog.FileName, (List<AsientoItem>)_datosActuales);
-                    else if (_reporteActivo == "Resultados")
-                        new ReporteEstadoResultados().GenerarExcel(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales);
-                    else if (_reporteActivo == "Balance")
-                        new ReporteBalanceGeneral().GenerarExcel(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales);
+                    var fechas = ObtenerFechas();
 
-                    MessageBox.Show("Documento de Excel exportado y guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (_reporteActivo == "Asiento") new ReporteAsientoContable().GenerarExcel(dialog.FileName, (List<AsientoItem>)_datosActuales);
+                    else if (_reporteActivo == "Resultados") new ReporteEstadoResultados().GenerarExcel(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales);
+                    else if (_reporteActivo == "Balance") new ReporteBalanceGeneral().GenerarExcel(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales);
+                    else if (_reporteActivo == "Stock") new ReporteStock().GenerarExcel(dialog.FileName, (List<ItemStock>)_datosActuales);
+                    else if (_reporteActivo == "Kardex") new ReporteKardex().GenerarExcel(dialog.FileName, (List<ItemKardex>)_datosActuales);
+                    else if (_reporteActivo == "CierreCaja") new ReporteCierreCaja().GenerarExcel(dialog.FileName, (List<ReporteItemFinanciero>)_datosActuales, fechas.Fin);
+
+                    MessageBox.Show("Documento de Excel guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {

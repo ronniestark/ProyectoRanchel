@@ -333,6 +333,20 @@ namespace MiselaneaRanchel.Views
             CmbProveedor.IsEnabled = !bloquear;
             TxtFactura.IsReadOnly = bloquear;
         }
+
+        // =========================================================
+        // ABRIR DETALLE DE LA FACTURA (DOBLE CLIC)
+        // =========================================================
+        private void DgHistorialCompras_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Verificamos que realmente se haya seleccionado una compra de la tabla
+            if (DgHistorialCompras.SelectedItem is Compra compraSeleccionada)
+            {
+                // Instanciamos y abrimos la nueva ventana modal enviándole la compra
+                var ventanaDetalle = new DetalleCompraWindow(compraSeleccionada);
+                ventanaDetalle.ShowDialog();
+            }
+        }
     }
 
     

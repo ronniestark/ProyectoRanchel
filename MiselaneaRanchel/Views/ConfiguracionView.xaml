@@ -71,22 +71,30 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- AHORA ESTÁ VALIDADO -->
                     <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                        <TextBlock Text="Costo Unitario ($):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                        <TextBlock Text="Costo Unitario (C$):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
                         <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
-                            <TextBox x:Name="TxtCosto" Height="38" FontSize="15" Padding="8,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" TextChanged="CalcularPrecioFinal_TextChanged"/>
+                            <TextBox x:Name="TxtCosto" Height="38" FontSize="15" Padding="8,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" 
+                                     TextChanged="CalcularPrecioFinal_TextChanged"
+                                     PreviewTextInput="ValidarSoloNumerosDecimales" 
+                                     DataObject.Pasting="PrevenirPegadoInvalido"/>
                         </Border>
                     </StackPanel>
 
+                    <!-- AHORA ESTÁ VALIDADO -->
                     <StackPanel Grid.Column="1" Margin="0,0,15,0">
                         <TextBlock Text="Ganancia (%):" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
                         <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
-                            <TextBox x:Name="TxtGanancia" Height="38" FontSize="15" Padding="8,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" TextChanged="CalcularPrecioFinal_TextChanged"/>
+                            <TextBox x:Name="TxtGanancia" Height="38" FontSize="15" Padding="8,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" 
+                                     TextChanged="CalcularPrecioFinal_TextChanged"
+                                     PreviewTextInput="ValidarSoloNumerosDecimales" 
+                                     DataObject.Pasting="PrevenirPegadoInvalido"/>
                         </Border>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Margin="0,0,15,0">
-                        <TextBlock Text="Precio Final Venta ($):" FontWeight="Bold" Foreground="#2980B9" Margin="0,0,0,5"/>
+                        <TextBlock Text="Precio Final Venta (C$):" FontWeight="Bold" Foreground="#2980B9" Margin="0,0,0,5"/>
                         <Border BorderBrush="#AED6F1" BorderThickness="1" CornerRadius="5" Background="#EAF2F8">
                             <TextBox x:Name="TxtPrecioVenta" Height="38" FontSize="18" Padding="8,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" IsReadOnly="True" Foreground="#21618C" FontWeight="Bold"/>
                         </Border>

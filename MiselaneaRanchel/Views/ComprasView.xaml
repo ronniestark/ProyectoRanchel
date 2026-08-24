@@ -80,6 +80,7 @@
                                 <StackPanel Grid.Column="1" Margin="0,0,15,0">
                                     <TextBlock Text="N° Factura / Remisión:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
                                     <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
+                                        <!-- No validamos factura con números porque las facturas a veces llevan letras (Ej. FAC-001) -->
                                         <TextBox x:Name="TxtFactura" Height="38" FontSize="15" Padding="10,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0"/>
                                     </Border>
                                 </StackPanel>
@@ -117,17 +118,23 @@
                                     </Border>
                                 </StackPanel>
 
+                                <!-- AHORA ESTÁ VALIDADO -->
                                 <StackPanel Grid.Column="1" Margin="0,0,15,0">
                                     <TextBlock Text="Costo Unit. (C$):" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
                                     <Border BorderBrush="#7F8C8D" BorderThickness="1" CornerRadius="5" Background="White">
-                                        <TextBox x:Name="TxtCosto" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Right" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#D35400"/>
+                                        <TextBox x:Name="TxtCosto" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Right" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#D35400"
+                                                 PreviewTextInput="ValidarSoloNumerosDecimales" 
+                                                 DataObject.Pasting="PrevenirPegadoInvalido"/>
                                     </Border>
                                 </StackPanel>
 
+                                <!-- AHORA ESTÁ VALIDADO -->
                                 <StackPanel Grid.Column="2" Margin="0,0,15,0">
                                     <TextBlock Text="Cantidad a Sumar:" FontWeight="Bold" Foreground="#ECF0F1" Margin="0,0,0,5"/>
                                     <Border BorderBrush="#7F8C8D" BorderThickness="1" CornerRadius="5" Background="White">
-                                        <TextBox x:Name="TxtCantidad" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Center" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#2980B9" KeyDown="TxtCantidad_KeyDown"/>
+                                        <TextBox x:Name="TxtCantidad" Height="40" FontSize="16" Padding="10,0" VerticalContentAlignment="Center" TextAlignment="Center" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#2980B9" KeyDown="TxtCantidad_KeyDown"
+                                                 PreviewTextInput="ValidarSoloNumerosDecimales" 
+                                                 DataObject.Pasting="PrevenirPegadoInvalido"/>
                                     </Border>
                                 </StackPanel>
 
@@ -400,7 +407,6 @@
                     </Grid>
                 </Border>
             </TabItem>
-
         </TabControl>
     </Grid>
 </UserControl>

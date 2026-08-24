@@ -73,11 +73,14 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Campo de Cantidad -->
+                                <!-- Campo de Cantidad (AHORA VALIDADO) -->
                                 <StackPanel Grid.Column="0" Margin="0,0,15,0">
                                     <TextBlock Text="Cant:" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,0,0,5"/>
                                     <Border BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9">
-                                        <TextBox x:Name="TxtCantidad" Text="1" Width="70" Height="43" FontSize="20" Padding="0,5" TextAlignment="Center" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#2980B9" KeyDown="TxtCantidad_KeyDown"/>
+                                        <TextBox x:Name="TxtCantidad" Text="1" Width="70" Height="43" FontSize="20" Padding="0,5" TextAlignment="Center" Background="Transparent" BorderThickness="0" FontWeight="Bold" Foreground="#2980B9" 
+                                                 KeyDown="TxtCantidad_KeyDown"
+                                                 PreviewTextInput="ValidarSoloNumerosDecimales" 
+                                                 DataObject.Pasting="PrevenirPegadoInvalido"/>
                                     </Border>
                                 </StackPanel>
 
@@ -245,9 +248,15 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Efectivo Recibido:" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,15,15"/>
+
+                                    <!-- AHORA ESTÁ VALIDADO -->
                                     <Border Grid.Row="0" Grid.Column="1" BorderBrush="#BDC3C7" BorderThickness="1" CornerRadius="5" Background="#F8F9F9" Margin="0,0,0,15">
-                                        <TextBox x:Name="TxtEfectivo" Width="130" Height="40" FontSize="22" FontWeight="Bold" TextAlignment="Right" Foreground="#2980B9" Background="Transparent" BorderThickness="0" Padding="5,0,10,0" VerticalContentAlignment="Center" TextChanged="TxtEfectivo_TextChanged"/>
+                                        <TextBox x:Name="TxtEfectivo" Width="130" Height="40" FontSize="22" FontWeight="Bold" TextAlignment="Right" Foreground="#2980B9" Background="Transparent" BorderThickness="0" Padding="5,0,10,0" VerticalContentAlignment="Center" 
+                                                 TextChanged="TxtEfectivo_TextChanged"
+                                                 PreviewTextInput="ValidarSoloNumerosDecimales" 
+                                                 DataObject.Pasting="PrevenirPegadoInvalido"/>
                                     </Border>
+
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Cambio a Entregar:" FontWeight="Bold" Foreground="#7F8C8D" VerticalAlignment="Center" Margin="0,0,15,0"/>
                                     <TextBlock x:Name="TxtCambio" Grid.Row="1" Grid.Column="1" Text="C$ 0.00" FontSize="26" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                                 </Grid>
@@ -334,13 +343,14 @@
                             </Button>
                         </Grid>
 
+                        <TextBlock Text="💡 Doble clic sobre una fila para ver el detalle de los productos vendidos" FontSize="14" Foreground="#2980B9" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,0,10" Grid.Row="1"/>
+
                         <!-- TABLA HISTORIAL -->
-                        <DataGrid x:Name="DgHistorialVentas" Grid.Row="1" Background="Transparent" BorderThickness="0" 
+                        <DataGrid x:Name="DgHistorialVentas" Grid.Row="1" Margin="0,35,0,0" Background="Transparent" BorderThickness="0" 
                                   AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" 
                                   HeadersVisibility="Column" SelectionMode="Single" IsReadOnly="True"
                                   GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#ECF0F1"
                                   MouseDoubleClick="DgHistorialVentas_MouseDoubleClick">
-
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Background" Value="#F8F9F9"/>
@@ -388,7 +398,6 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-
                                 <DataGridTextColumn Header="FECHA DE VENTA" Width="*" Binding="{Binding FechaVenta, StringFormat=dd/MM/yyyy HH:mm}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
@@ -396,7 +405,6 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-
                                 <DataGridTextColumn Header="EFECTIVO" Width="140" Binding="{Binding EfectivoRecibido, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
@@ -405,7 +413,6 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-
                                 <DataGridTextColumn Header="CAMBIO" Width="140" Binding="{Binding CambioEntregado, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
@@ -414,7 +421,6 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-
                                 <DataGridTextColumn Header="TOTAL COBRADO" Width="180" Binding="{Binding TotalVenta, StringFormat=C$ \{0:N2\}}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">

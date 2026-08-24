@@ -223,5 +223,44 @@ namespace MiselaneaRanchel.Views
             DgProductos.SelectedItem = null;
             TxtBuscarGrilla.Text = "";
         }
+
+        // =================================================================
+        // 6. VALIDACIONES DE ENTRADA (SOLO NÚMEROS Y DECIMALES)
+        // =================================================================
+
+        private void ValidarSoloNumerosDecimales(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            // Permitir solo dígitos y un único punto decimal
+            if (!char.IsDigit(e.Text, e.Text.Length - 1) && e.Text != ".")
+            {
+                e.Handled = true; // Bloquea la tecla si es una letra
+            }
+            // Si el usuario presionó un punto, verificamos que no exista ya uno en la caja de texto
+            else if (e.Text == "." && textBox.Text.Contains("."))
+            {
+                e.Handled = true; // Bloquea la tecla porque ya hay un punto decimal
+            }
+        }
+
+        private void PrevenirPegadoInvalido(object sender, DataObjectPastingEventArgs e)
+        {
+            // Verificamos si lo que el usuario quiere pegar es texto
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string textoPegado = (string)e.DataObject.GetData(typeof(string));
+
+                // Si el texto que intentan pegar NO es un número válido, bloqueamos la acción de pegar
+                if (!decimal.TryParse(textoPegado, out _))
+                {
+                    e.CancelCommand(); // Cancela el "Ctrl+V"
+                }
+            }
+            else
+            {
+                e.CancelCommand(); // Cancela si intentan pegar imágenes u otro formato
+            }
+        }
     }
 }

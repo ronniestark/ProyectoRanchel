@@ -12,8 +12,7 @@ namespace MiselaneaRanchel.Views
     {
         private readonly ApplicationDbContext _context;
 
-        // Variables para la matemática interna
-        private decimal _fondoInicial = 500.00m; // Puedes volver esto dinámico si creas una configuración
+        // Variables para la matemática interna (ya no necesitamos el fondoInicial aquí)
         private decimal _ventasDelDia = 0;
         private decimal _salidasDelDia = 0;
         private decimal _totalEsperado = 0;
@@ -45,18 +44,12 @@ namespace MiselaneaRanchel.Views
                     .Where(c => c.FechaCompra.Date == hoy && c.Estado == "COMPLETADO")
                     .Sum(c => c.TotalCompra);
 
-                // Calcular el Total Esperado
-                _totalEsperado = _fondoInicial + _ventasDelDia - _salidasDelDia;
-
-                // Plasmar los números en las tarjetas
-                TxtFondoInicial.Text = _fondoInicial.ToString("C$ #,##0.00");
+                // Plasmar los números de la BD en las tarjetas
                 TxtVentasEfectivo.Text = _ventasDelDia.ToString("C$ #,##0.00");
                 TxtSalidasExtra.Text = $"- {_salidasDelDia.ToString("C$ #,##0.00")}";
-                TxtTotalEsperado.Text = _totalEsperado.ToString("C$ #,##0.00");
 
-                // Resetear la vista inferior
-                TxtEfectivoReal.Text = "";
-                ActualizarDiferencia();
+                // Refrescamos la matemática sumando el fondo
+                RecalcularTotales();
             }
             catch (Exception ex)
             {
@@ -70,8 +63,34 @@ namespace MiselaneaRanchel.Views
         }
 
         // ====================================================================
-        // 2. LÓGICA EN TIEMPO REAL (DIFERENCIAS Y COLORES)
+        // 2. LÓGICA EN TIEMPO REAL (FONDOS, DIFERENCIAS Y COLORES)
         // ====================================================================
+
+        // Se ejecuta si el usuario cambia el valor del Fondo Inicial manualmente
+        private void TxtFondoInicial_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RecalcularTotales();
+        }
+
+        private void RecalcularTotales()
+        {
+            // ESCUDO: Si la pantalla apenas está cargando y estos textos no existen, no hacemos nada aún.
+            if (TxtTotalEsperado == null || TxtFondoInicial == null) return;
+
+            // Leer el fondo de la pantalla (Si está vacío, se asume 0)
+            if (!decimal.TryParse(TxtFondoInicial.Text, out decimal fondoInicial))
+            {
+                fondoInicial = 0;
+            }
+
+            // Calcular el Total Esperado
+            _totalEsperado = fondoInicial + _ventasDelDia - _salidasDelDia;
+            TxtTotalEsperado.Text = _totalEsperado.ToString("C$ #,##0.00");
+
+            // Recalcular también la diferencia con la gaveta
+            ActualizarDiferencia();
+        }
+
         private void TxtEfectivoReal_TextChanged(object sender, TextChangedEventArgs e)
         {
             ActualizarDiferencia();
@@ -79,6 +98,9 @@ namespace MiselaneaRanchel.Views
 
         private void ActualizarDiferencia()
         {
+            // ESCUDO: Validamos que los controles gráficos ya existan en la pantalla
+            if (TxtDiferencia == null || TxtEstadoCaja == null || TxtEfectivoReal == null) return;
+
             if (decimal.TryParse(TxtEfectivoReal.Text, out decimal efectivoFisico))
             {
                 decimal diferencia = efectivoFisico - _totalEsperado;
@@ -90,32 +112,32 @@ namespace MiselaneaRanchel.Views
                 if (diferencia == 0)
                 {
                     // Caja Cuadrada
-                    TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2C3E50")); // Gris Oscuro
+                    TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2C3E50"));
                     TxtEstadoCaja.Text = "CAJA CUADRADA";
-                    TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#27AE60")); // Verde
+                    TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#27AE60"));
                 }
                 else if (diferencia < 0)
                 {
                     // Faltante de dinero
-                    TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")); // Rojo
+                    TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C"));
                     TxtEstadoCaja.Text = "FALTANTE DE DINERO";
-                    TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")); // Rojo
+                    TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C"));
                 }
                 else
                 {
                     // Sobrante de dinero
-                    TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F39C12")); // Amarillo/Naranja
+                    TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F39C12"));
                     TxtEstadoCaja.Text = "SOBRANTE DE DINERO";
-                    TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F39C12")); // Amarillo/Naranja
+                    TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F39C12"));
                 }
             }
             else
             {
                 // Si el campo está vacío o tiene letras
-                TxtDiferencia.Text = "$ 0.00";
+                TxtDiferencia.Text = "C$ 0.00";
                 TxtDiferencia.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2C3E50"));
                 TxtEstadoCaja.Text = "ESPERANDO CONTEO";
-                TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#BDC3C7")); // Gris claro
+                TxtEstadoCaja.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#BDC3C7"));
             }
         }
 
@@ -131,11 +153,17 @@ namespace MiselaneaRanchel.Views
                 return;
             }
 
+            if (!decimal.TryParse(TxtFondoInicial.Text, out decimal fondoInicialFinal))
+            {
+                fondoInicialFinal = 0;
+            }
+
             decimal diferencia = efectivoFisico - _totalEsperado;
 
             // Confirmación de seguridad
             var confirmacion = MessageBox.Show(
                 $"Vas a cerrar el turno con los siguientes datos:\n\n" +
+                $"Fondo Inicial: {fondoInicialFinal.ToString("C$ #,##0.00")}\n" +
                 $"Total Esperado: {_totalEsperado.ToString("C$ #,##0.00")}\n" +
                 $"Total Físico: {efectivoFisico.ToString("C$ #,##0.00")}\n" +
                 $"Diferencia: {diferencia.ToString("C$ #,##0.00")}\n\n" +
@@ -149,14 +177,12 @@ namespace MiselaneaRanchel.Views
                     var nuevoCorte = new CorteDeCaja
                     {
                         FechaCorte = DateTime.Now,
-                        FondoInicial = _fondoInicial,
+                        FondoInicial = fondoInicialFinal,
                         VentasEfectivo = _ventasDelDia,
                         SalidasExtra = _salidasDelDia,
                         TotalEsperado = _totalEsperado,
                         EfectivoReal = efectivoFisico,
                         Diferencia = diferencia,
-
-                        // Asignamos la lógica de la diferencia al campo EstadoCaja que tú creaste
                         EstadoCaja = diferencia == 0 ? "CUADRADA" : (diferencia < 0 ? "FALTANTE" : "SOBRANTE")
                     };
 
@@ -165,7 +191,8 @@ namespace MiselaneaRanchel.Views
 
                     MessageBox.Show("¡Corte de caja guardado con éxito! El turno ha sido cerrado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    // Opcional: Bloquear la pantalla después de cerrar
+                    // Bloqueamos la pantalla después de cerrar
+                    TxtFondoInicial.IsReadOnly = true;
                     TxtEfectivoReal.IsReadOnly = true;
                     BtnCerrarTurno.IsEnabled = false;
                 }
@@ -173,6 +200,43 @@ namespace MiselaneaRanchel.Views
                 {
                     MessageBox.Show($"Ocurrió un error al guardar el corte: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+        }
+
+        // =================================================================
+        // VALIDACIONES DE ENTRADA (SOLO NÚMEROS Y DECIMALES)
+        // =================================================================
+
+        private void ValidarSoloNumerosDecimales(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            // Permitir solo dígitos y un único punto decimal
+            if (!char.IsDigit(e.Text, e.Text.Length - 1) && e.Text != ".")
+            {
+                e.Handled = true;
+            }
+            // Si el usuario presionó un punto, verificamos que no exista ya uno en la caja de texto
+            else if (e.Text == "." && textBox.Text.Contains("."))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void PrevenirPegadoInvalido(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string textoPegado = (string)e.DataObject.GetData(typeof(string));
+
+                if (!decimal.TryParse(textoPegado, out _))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
             }
         }
     }

@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewsModels\**" />
+    <EmbeddedResource Remove="ViewsModels\**" />
+    <None Remove="ViewsModels\**" />
+    <Page Remove="ViewsModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.1" />
     <PackageReference Include="itext7" Version="9.7.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.3.2" />
@@ -18,10 +25,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4129.50" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewsModels\" />
   </ItemGroup>
 
 </Project>
